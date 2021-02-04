@@ -5,4 +5,21 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Samples\" />
+    <Folder Include="Syntax\" />
+    <Folder Include="Utils\" />
+    <Folder Include="Types\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Samples\sample1.cml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Samples\sample1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Samples\sample1.lis">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
