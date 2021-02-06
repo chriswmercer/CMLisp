@@ -6,7 +6,7 @@ namespace CMLisp
 {
     public static class Symbols
     {
-        public static Dictionary<string, Func<BaseType, BaseType, BaseType>> Known = new Dictionary<string, Func<BaseType, BaseType, BaseType>>()
+        private static Dictionary<string, Func<BaseType, BaseType, BaseType>> FunctionLookup = new Dictionary<string, Func<BaseType, BaseType, BaseType>>()
         {
             {"+", (x, y) => Addition(x, y)},
             {"-", (x, y) => Addition(x, y)},
@@ -18,9 +18,15 @@ namespace CMLisp
         {
         }
 
+        public static Func<BaseType, BaseType, BaseType> FunctionFor(string functionName)
+        {
+            if (!FunctionLookup.ContainsKey(functionName)) throw new ArgumentException($"Function { functionName} was not recognised.");
+            return FunctionLookup[functionName];
+        }
+
         public static bool IsKnown(string potentialSymbol)
         {
-            return Known.ContainsKey(potentialSymbol.ToLower());
+            return FunctionLookup.ContainsKey(potentialSymbol.ToLower());
         }
 
         internal static BaseType Addition(BaseType x, BaseType y)
