@@ -7,6 +7,8 @@ namespace CMLisp
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+
+            REPL.REPL.Run();
         }
     }
 }

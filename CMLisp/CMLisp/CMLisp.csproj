@@ -7,5 +7,7 @@
 
   <ItemGroup>
     <Folder Include="REPL\" />
+    <Folder Include="Interpreter\" />
+    <Folder Include="Types\" />
   </ItemGroup>
 </Project>

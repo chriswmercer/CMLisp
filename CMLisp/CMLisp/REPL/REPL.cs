@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using CMLisp.Interpreter;
+using CMLisp.Types;
 
 namespace CMLisp.REPL
 {
@@ -25,14 +27,14 @@ namespace CMLisp.REPL
             return Print(evaluateResult);
         }
 
-        private static string Read(string input)
+        private static BaseType Read(string input)
         {
-            return input;
+            return Parser.ReadString(input);
         }
 
-        private static string Evaluate(string input)
+        private static string Evaluate(BaseType input)
         {
-            return input;
+            return "";
         }
 
         private static string Print(string input)
