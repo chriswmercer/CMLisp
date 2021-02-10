@@ -31,7 +31,7 @@ namespace CMLisp
 
         internal static BaseType Addition(BaseType x, BaseType y)
         {
-            if (x.Type == Types.Types.Decimal || y.Type == Types.Types.Decimal)
+            if (x.Type == Types.LanguageTypes.Decimal || y.Type == Types.LanguageTypes.Decimal)
             {
                 CheckNumbers(x, y);
 
@@ -39,7 +39,7 @@ namespace CMLisp
                 return new DecimalType(result);
             }
 
-            if (x.Type == Types.Types.Integer || y.Type == Types.Types.Integer)
+            if (x.Type == Types.LanguageTypes.Integer || y.Type == Types.LanguageTypes.Integer)
             {
                 CheckNumbers(x, y);
 
@@ -47,9 +47,9 @@ namespace CMLisp
                 return new IntegerType(result);
             }
 
-            if (x.Type == Types.Types.List || y.Type == Types.Types.List)
+            if (x.Type == Types.LanguageTypes.List || y.Type == Types.LanguageTypes.List)
             {
-                if(x.Type == Types.Types.List && y.Type == Types.Types.List)
+                if(x.Type == Types.LanguageTypes.List && y.Type == Types.LanguageTypes.List)
                 {
                     List<BaseType> bx = (List<BaseType>)x.Value;
                     List<BaseType> by = (List<BaseType>)y.Value;
@@ -57,7 +57,7 @@ namespace CMLisp
                     return new ListType(bx);
                 }
 
-                if(x.Type != Types.Types.List)
+                if(x.Type != Types.LanguageTypes.List)
                 {
                     List<BaseType> bx = new List<BaseType>();
                     bx.Add(x);
@@ -66,7 +66,7 @@ namespace CMLisp
                     return new ListType(bx);
                 }
 
-                if(y.Type != Types.Types.List)
+                if(y.Type != Types.LanguageTypes.List)
                 {
                     List<BaseType> bx = (List<BaseType>)x.Value;
                     List<BaseType> by = new List<BaseType>();
@@ -76,7 +76,7 @@ namespace CMLisp
                 }
             }
 
-            if(x.Type == Types.Types.Boolean && y.Type == Types.Types.Boolean)
+            if(x.Type == Types.LanguageTypes.Boolean && y.Type == Types.LanguageTypes.Boolean)
             {
                 return new BooleanType((bool)x.Value && (bool)y.Value);
             }
@@ -86,12 +86,12 @@ namespace CMLisp
 
         private static void CheckNumbers(BaseType x, BaseType y)
         {
-            if (x.Type == Types.Types.String ||
-                x.Type == Types.Types.Boolean ||
-                x.Type == Types.Types.List ||
-                y.Type == Types.Types.String ||
-                y.Type == Types.Types.Boolean ||
-                y.Type == Types.Types.List)
+            if (x.Type == Types.LanguageTypes.String ||
+                x.Type == Types.LanguageTypes.Boolean ||
+                x.Type == Types.LanguageTypes.List ||
+                y.Type == Types.LanguageTypes.String ||
+                y.Type == Types.LanguageTypes.Boolean ||
+                y.Type == Types.LanguageTypes.List)
             {
                 throw new ArgumentException("Cannot add decimal to non-numeric types");
             }

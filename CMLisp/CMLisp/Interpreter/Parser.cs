@@ -25,9 +25,13 @@ namespace CMLisp.Interpreter
             var firstToken = reader.Next();
             var firstCharacter = firstToken.Value.Substring(0, 1);
 
-            if (firstCharacter == "(")
+            if (firstCharacter == OpeningCharacterFor(LanguageTypes.List))
             {
-                returnValue = ReadList(reader);
+                returnValue = ReadList(reader, LanguageTypes.List);
+            }
+            else if (firstCharacter == OpeningCharacterFor(LanguageTypes.Vector))
+            {
+                returnValue = ReadList(reader, LanguageTypes.Vector);
             }
             else
             {
@@ -37,7 +41,7 @@ namespace CMLisp.Interpreter
             return returnValue;
         }
 
-        public static ListType ReadList(Reader reader)
+        public static ListType ReadList(Reader reader, LanguageTypes type)
         {
             var tokens = new List<BaseType>();
 
@@ -45,9 +49,9 @@ namespace CMLisp.Interpreter
             {
                 var form = ReadForm(reader);
 
-                if(form.Type == Types.Types.String && form.Value == ")")
+                if(form.Type == Types.LanguageTypes.String && form.Value == ClosingCharacterFor(type))
                 {
-                    return new ListType(tokens);
+                    return GenerateFor(type, tokens);
                 }
 
                 tokens.Add(form);
@@ -55,10 +59,10 @@ namespace CMLisp.Interpreter
 
             var lastToken = tokens[tokens.Count - 1];
 
-            if (lastToken.Type != Types.Types.String) throw new ArgumentException("List was not closed");
+            if (lastToken.Type != Types.LanguageTypes.String) throw new ArgumentException("List was not closed");
 
             string value = lastToken.Value.ToString();
-            if (value.Substring(value.Length - 1, 1) != ")") throw new ArgumentException("List was not closed");
+            if (value.Substring(value.Length - 1, 1) != ClosingCharacterFor(type)) throw new ArgumentException("List was not closed");
 
             tokens.RemoveAt(tokens.Count - 1);
             return new ListType(tokens);
@@ -87,6 +91,16 @@ namespace CMLisp.Interpreter
                 return new SymbolType(stringType.Value);
             }
 
+            if (Keywords.IsKnown(stringType.Value))
+            {
+                return new KeywordType(stringType.Value);
+            }
+
+            if(stringType.Value.ToLower() == "nil")
+            {
+                return new NilType();
+            }
+
             return stringType;
         }
 
@@ -102,6 +116,36 @@ namespace CMLisp.Interpreter
             }
 
             return builtTokens;
+        }
+
+        private static string OpeningCharacterFor(LanguageTypes type)
+        {
+            switch(type)
+            {
+                case LanguageTypes.List: return "(";
+                case LanguageTypes.Vector: return "[";
+                default: throw new ArgumentException($"{type} is not a valid type with a required opening character");
+            }
+        }
+
+        private static string ClosingCharacterFor(LanguageTypes type)
+        {
+            switch (type)
+            {
+                case LanguageTypes.List: return ")";
+                case LanguageTypes.Vector: return "]";
+                default: throw new ArgumentException($"{type} is not a valid type with a required closing character");
+            }
+        }
+
+        private static ListType GenerateFor(LanguageTypes type, List<BaseType> tokens)
+        {
+            switch (type)
+            {
+                case LanguageTypes.List: return new ListType(tokens);
+                case LanguageTypes.Vector: return new VectorType(tokens);
+                default: throw new ArgumentException($"{type} is not a valid list/vector type");
+            }
         }
     }
 }
