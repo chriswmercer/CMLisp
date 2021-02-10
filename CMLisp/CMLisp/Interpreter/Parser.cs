@@ -101,6 +101,25 @@ namespace CMLisp.Interpreter
                 return new NilType();
             }
 
+            var value = stringType.Value as string;
+            if (value == null) throw new ArgumentException($"Couldn't parse value { stringType.Value }");
+            value = value.Trim();
+
+            if (value.Length == 1)
+            {
+                if (GetKnownDelimiters().Contains(value))
+                {
+                    return stringType;
+                }
+            }
+
+            //This atom isn't special, therefore check its a valid string
+            var start = (value.Substring(0, 1));
+            var end = (value.Substring(value.Length - 1, 1));
+            if (start != "\"" || end != "\"") throw new ArgumentException($"String {value} is not correctly delimited");
+            value = value.Replace("\"", "");
+            stringType.Value = value;
+
             return stringType;
         }
 
@@ -146,6 +165,17 @@ namespace CMLisp.Interpreter
                 case LanguageTypes.Vector: return new VectorType(tokens);
                 default: throw new ArgumentException($"{type} is not a valid list/vector type");
             }
+        }
+
+        private static List<string> GetKnownDelimiters()
+        {
+            return new List<string>
+            {
+                "(",
+                ")",
+                "[",
+                "]"
+            };
         }
     }
 }
