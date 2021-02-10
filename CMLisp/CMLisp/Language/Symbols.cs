@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using CMLisp.Types;
 
-namespace CMLisp
+namespace CMLisp.Language
 {
     public static class Symbols
     {

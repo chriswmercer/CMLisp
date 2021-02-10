@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using CMLisp.Types;
 
-namespace CMLisp.Interpreter
+namespace CMLisp.Language
 {
     public static class Keywords
     {

@@ -9,5 +9,6 @@
     <Folder Include="REPL\" />
     <Folder Include="Interpreter\" />
     <Folder Include="Types\" />
+    <Folder Include="Language\" />
   </ItemGroup>
 </Project>
