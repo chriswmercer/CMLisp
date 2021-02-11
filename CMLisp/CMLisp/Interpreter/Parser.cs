@@ -4,9 +4,9 @@ using System.Text.RegularExpressions;
 using CMLisp.Language;
 using CMLisp.Types;
 
-namespace CMLisp.Interpreter
+namespace CMLisp.Core
 {
-    public static class Parser
+    internal static class Parser
     {
         private const string tokenPattern = "[\\s,]*(~@|[\\[\\]{}()'`~^@]|\"(?:\\.|[^\\\"])*\" ?|;.*|[^\\s\\[\\]{}'\"`,;)]*)";
 

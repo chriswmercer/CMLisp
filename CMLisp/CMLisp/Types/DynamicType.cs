@@ -5,7 +5,7 @@ namespace CMLisp.Types
 {
     public class DynamicType<T> : BaseType where T: new()
     {
-        private T internalValue;
+        protected T internalValue;
 
         public DynamicType(T val)
         {

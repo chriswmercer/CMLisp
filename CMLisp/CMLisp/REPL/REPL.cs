@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CMLisp.Interpreter;
+using CMLisp.Core;
 using CMLisp.Types;
 
 namespace CMLisp.REPL
@@ -15,31 +15,9 @@ namespace CMLisp.REPL
             {
                 Console.Write("cmlisp> ");
                 input = Console.ReadLine();
-                var output = Rep(input);
+                var output = Interpreter.InterpretToString(input);
                 Console.WriteLine(output);
             }
-        }
-
-        private static string Rep(string input)
-        {
-            var readResult = Read(input);
-            var evaluateResult = Evaluate(readResult);
-            return Print(evaluateResult);
-        }
-
-        private static BaseType Read(string input)
-        {
-            return Parser.ReadString(input);
-        }
-
-        private static string Evaluate(BaseType input)
-        {
-            return "";
-        }
-
-        private static string Print(string input)
-        {
-            return input;
         }
     }
 }

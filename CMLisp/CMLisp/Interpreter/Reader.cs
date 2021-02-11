@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using CMLisp.Types;
 
-namespace CMLisp.Interpreter
+namespace CMLisp.Core
 {
-    public class Reader
+    internal class Reader
     {
         internal List<Token> Tokens;
         private int position;

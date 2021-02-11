@@ -1,7 +1,7 @@
 ﻿using System;
-namespace CMLisp.Interpreter
+namespace CMLisp.Core
 {
-    public class Token
+    internal class Token
     {
         public string Value { get; set; }
 

@@ -8,5 +8,10 @@ namespace CMLisp.Types
         {
             Type = LanguageTypes.Keyword;
         }
+
+        public static implicit operator string(KeywordType x)
+        {
+            return (string)x.Value;
+        }
     }
 }

@@ -4,7 +4,7 @@ using CMLisp.Types;
 
 namespace CMLisp.Language
 {
-    public static class Keywords
+    internal static class Keywords
     {
         private static Dictionary<string, Func<BaseType, BaseType, BaseType>> FunctionLookup = new Dictionary<string, Func<BaseType, BaseType, BaseType>>()
         {
