@@ -34,6 +34,10 @@ namespace CMLisp.Core
             {
                 returnValue = ReadList(reader, LanguageTypes.Vector);
             }
+            else if (firstCharacter == OpeningCharacterFor(LanguageTypes.HashMap))
+            {
+                returnValue = ReadList(reader, LanguageTypes.HashMap);
+            }
             else
             {
                 returnValue = ReadAtom(firstToken);
@@ -116,14 +120,20 @@ namespace CMLisp.Core
             }
 
             //is it a fragment?
-            var start = (value.Substring(0, 1));
-            var end = (value.Substring(value.Length - 1, 1));
-            //if (start == "<" && end == ">")
-            //{
-            //    return new FragmentType(stringType.Value);
-            //}
+            if (value.Length > 2)
+            {
+                var startFrag = (value.Substring(0, 2));
+                var endFrag = (value.Substring(value.Length - 2, 2));
+                if (startFrag == "\"<" && endFrag == ">\"")
+                {
+                    value = value.Replace("\"", "");
+                    return new FragmentType(value);
+                }
+            }
 
             //Is it a string?
+            var start = (value.Substring(0, 1));
+            var end = (value.Substring(value.Length - 1, 1));
             if (start == "\"")
             {
                 //is it correct delimited?
@@ -158,6 +168,7 @@ namespace CMLisp.Core
             {
                 case LanguageTypes.List: return "(";
                 case LanguageTypes.Vector: return "[";
+                case LanguageTypes.HashMap: return "{";
                 default: throw new ArgumentException($"{type} is not a valid type with a required opening character");
             }
         }
@@ -168,6 +179,7 @@ namespace CMLisp.Core
             {
                 case LanguageTypes.List: return ")";
                 case LanguageTypes.Vector: return "]";
+                case LanguageTypes.HashMap: return "}";
                 default: throw new ArgumentException($"{type} is not a valid type with a required closing character");
             }
         }
@@ -178,8 +190,31 @@ namespace CMLisp.Core
             {
                 case LanguageTypes.List: return new ListContainer(tokens);
                 case LanguageTypes.Vector: return new VectorType(tokens);
-                default: throw new ArgumentException($"{type} is not a valid list/vector type");
+                case LanguageTypes.HashMap: return new HashMapType(HashMapGenerator(tokens));
+                default: throw new ArgumentException($"{type} is not a valid list/vector/hashmap type");
             }
+        }
+
+        private static List<BaseType> HashMapGenerator(List<BaseType> tokens)
+        {
+            List<BaseType> returnList = new List<BaseType>();
+
+            if (tokens.Count % 3 != 0) throw new ArgumentException("The hashmap was invalid. Format example: { identifier : <basetype> , identifier2 : <basetype> }");
+
+            tokens.RemoveAll(x => x.Value == ":");
+
+            using (var iterator = tokens.GetEnumerator())
+            {
+                while (iterator.MoveNext())
+                {
+                    var first = iterator.Current;
+                    var second = iterator.MoveNext() ? iterator.Current : throw new Exception("Internal error: Hashmap invalid after check");
+
+                    returnList.Add(new KeyValuePairType(new KeyValuePair<IdentifierType, BaseType>(first as IdentifierType, second)));
+                }
+            }
+
+            return returnList;
         }
 
         private static List<string> GetKnownDelimiters()
@@ -189,7 +224,10 @@ namespace CMLisp.Core
                 "(",
                 ")",
                 "[",
-                "]"
+                "]",
+                "{",
+                "}",
+                ":"
             };
         }
     }

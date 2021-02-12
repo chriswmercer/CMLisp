@@ -16,6 +16,7 @@ namespace CMLisp.Types
         Keyword,
         HashMap,
         Identifier,
-        Fragment
+        Fragment,
+        KeyValuePair
     }
 }

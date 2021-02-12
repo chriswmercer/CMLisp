@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CMLisp.Language;
 using CMLisp.Types;
 
@@ -16,7 +17,7 @@ namespace CMLisp.Core
             string returnValue = new string(' ', indentation);
             if (indentation == 0) returnValue += "ROOT\n";
 
-            if (input.Type == LanguageTypes.List || input.Type == LanguageTypes.Vector)
+            if (input.Type == LanguageTypes.List || input.Type == LanguageTypes.Vector || input.Type == LanguageTypes.HashMap)
             {
                 returnValue += ReadList(input as ListContainer, indentation + 1);
             }
@@ -31,7 +32,7 @@ namespace CMLisp.Core
 
         private static string ReadList(ListContainer input, int indentation = 0)
         {
-            var returnString = "";// new string('\t', indentation);
+            var returnString = "";
 
             returnString += $"- { input } Value= { input.Value }\n";
 
@@ -47,7 +48,16 @@ namespace CMLisp.Core
         {
             var returnString = new string(' ', indentation);
 
-            returnString += $"- { input } Value= { input.Value }\n";
+            if (input.Type == LanguageTypes.KeyValuePair)
+            {
+                var value = (KeyValuePair<IdentifierType, BaseType>)input.Value;
+
+                returnString += $"- { input } Key= { value.Key.Value }, Value= { value.Value.Value }\n";
+            }
+            else
+            {
+                returnString += $"- { input } Value= { input.Value }\n";
+            }
 
             return returnString;
         }
