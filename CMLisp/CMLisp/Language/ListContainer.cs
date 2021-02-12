@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using CMLisp.Types;
 
-namespace CMLisp.Types
+namespace CMLisp.Language
 {
-    public class ListType : DynamicType<List<BaseType>>
+    public class ListContainer : DynamicType<List<BaseType>>
     {
         public new List<BaseType> Value
         {
@@ -14,7 +15,7 @@ namespace CMLisp.Types
             }
         }
 
-        public ListType(List<BaseType> val) : base(val)
+        public ListContainer(List<BaseType> val) : base(val)
         {
             Type = LanguageTypes.List;
         }

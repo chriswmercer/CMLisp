@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CMLisp.Language;
 
 namespace CMLisp.Types
 {
@@ -20,9 +21,9 @@ namespace CMLisp.Types
             return new IntegerType((int)x.Value);
         }
 
-        public static implicit operator ListType(DecimalType x)
+        public static implicit operator ListContainer(DecimalType x)
         {
-            return new ListType(new List<BaseType>
+            return new ListContainer(new List<BaseType>
             {
                 x
             });

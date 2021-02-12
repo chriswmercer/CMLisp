@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CMLisp.Core;
-using CMLisp.Types;
+using CMLisp.Language;
 
 namespace CMLisp.REPL
 {

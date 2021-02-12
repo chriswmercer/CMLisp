@@ -1,4 +1,5 @@
 ﻿using System;
+using CMLisp.Language;
 using CMLisp.Types;
 
 namespace CMLisp.Core
@@ -17,7 +18,7 @@ namespace CMLisp.Core
 
             if (input.Type == LanguageTypes.List || input.Type == LanguageTypes.Vector)
             {
-                returnValue += ReadList(input as ListType, indentation + 1);
+                returnValue += ReadList(input as ListContainer, indentation + 1);
             }
             else
             {
@@ -28,7 +29,7 @@ namespace CMLisp.Core
             return returnValue;
         }
 
-        private static string ReadList(ListType input, int indentation = 0)
+        private static string ReadList(ListContainer input, int indentation = 0)
         {
             var returnString = "";// new string('\t', indentation);
 

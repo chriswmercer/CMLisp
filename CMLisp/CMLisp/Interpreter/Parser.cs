@@ -42,7 +42,7 @@ namespace CMLisp.Core
             return returnValue;
         }
 
-        public static ListType ReadList(Reader reader, LanguageTypes type)
+        public static ListContainer ReadList(Reader reader, LanguageTypes type)
         {
             var tokens = new List<BaseType>();
 
@@ -50,7 +50,7 @@ namespace CMLisp.Core
             {
                 var form = ReadForm(reader);
 
-                if(form.Type == Types.LanguageTypes.String && form.Value == ClosingCharacterFor(type))
+                if(form.Type == LanguageTypes.String && form.Value == ClosingCharacterFor(type))
                 {
                     return GenerateFor(type, tokens);
                 }
@@ -60,13 +60,13 @@ namespace CMLisp.Core
 
             var lastToken = tokens[tokens.Count - 1];
 
-            if (lastToken.Type != Types.LanguageTypes.String) throw new ArgumentException("List was not closed");
+            if (lastToken.Type != LanguageTypes.String) throw new ArgumentException("List was not closed");
 
             string value = lastToken.Value.ToString();
             if (value.Substring(value.Length - 1, 1) != ClosingCharacterFor(type)) throw new ArgumentException("List was not closed");
 
             tokens.RemoveAt(tokens.Count - 1);
-            return new ListType(tokens);
+            return new ListContainer(tokens);
         }
 
         public static BaseType ReadAtom(Token token)
@@ -103,6 +103,7 @@ namespace CMLisp.Core
             }
 
             var value = stringType.Value as string;
+
             if (value == null) throw new ArgumentException($"Couldn't parse value { stringType.Value }");
             value = value.Trim();
 
@@ -114,14 +115,27 @@ namespace CMLisp.Core
                 }
             }
 
-            //This atom isn't special, therefore check its a valid string
+            //is it a fragment?
             var start = (value.Substring(0, 1));
             var end = (value.Substring(value.Length - 1, 1));
-            if (start != "\"" || end != "\"") throw new ArgumentException($"String {value} is not correctly delimited");
-            value = value.Replace("\"", "");
-            stringType.Value = value;
+            //if (start == "<" && end == ">")
+            //{
+            //    return new FragmentType(stringType.Value);
+            //}
 
-            return stringType;
+            //Is it a string?
+            if (start == "\"")
+            {
+                //is it correct delimited?
+                if(end != "\"") throw new ArgumentException($"String {value} is not correctly delimited");
+
+                value = value.Replace("\"", "");
+                stringType.Value = value;
+                return stringType;
+            }
+
+            //if not it must be an identifier
+            return new IdentifierType(stringType.Value);
         }
 
         private static List<Token> Tokenize(string input)
@@ -158,11 +172,11 @@ namespace CMLisp.Core
             }
         }
 
-        private static ListType GenerateFor(LanguageTypes type, List<BaseType> tokens)
+        private static ListContainer GenerateFor(LanguageTypes type, List<BaseType> tokens)
         {
             switch (type)
             {
-                case LanguageTypes.List: return new ListType(tokens);
+                case LanguageTypes.List: return new ListContainer(tokens);
                 case LanguageTypes.Vector: return new VectorType(tokens);
                 default: throw new ArgumentException($"{type} is not a valid list/vector type");
             }

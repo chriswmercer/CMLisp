@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CMLisp.Language;
 
 namespace CMLisp.Types
 {
@@ -25,9 +26,9 @@ namespace CMLisp.Types
             return new IntegerType((bool)x.Value ? 1 : 0);
         }
 
-        public static implicit operator ListType(BooleanType x)
+        public static implicit operator ListContainer(BooleanType x)
         {
-            return new ListType(new List<BaseType>
+            return new ListContainer(new List<BaseType>
             {
                 x
             });

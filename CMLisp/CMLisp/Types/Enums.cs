@@ -14,6 +14,8 @@ namespace CMLisp.Types
         Nil,
         Vector,
         Keyword,
-        HashMap
+        HashMap,
+        Identifier,
+        Fragment
     }
 }
