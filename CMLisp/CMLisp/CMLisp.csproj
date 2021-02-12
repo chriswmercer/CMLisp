@@ -10,5 +10,6 @@
     <Folder Include="Interpreter\" />
     <Folder Include="Types\" />
     <Folder Include="Language\" />
+    <Folder Include="Examples\" />
   </ItemGroup>
 </Project>

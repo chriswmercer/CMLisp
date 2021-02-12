@@ -155,7 +155,7 @@ namespace CMLisp.Core
 
             foreach (string token in raw)
             {
-                if(token == "") continue;
+                if(token == "" || token.StartsWith(";")) continue;
                 builtTokens.Add(new Token(token));
             }
 
