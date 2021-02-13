@@ -11,5 +11,6 @@
     <Folder Include="Types\" />
     <Folder Include="Language\" />
     <Folder Include="Examples\" />
+    <Folder Include="Exceptions\" />
   </ItemGroup>
 </Project>
