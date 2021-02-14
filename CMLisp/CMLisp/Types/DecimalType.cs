@@ -34,9 +34,9 @@ namespace CMLisp.Types
             return new StringType(((decimal)x.Value).ToString());
         }
 
-        public static implicit operator VectorType(DecimalType x)
+        public static implicit operator ArrayType(DecimalType x)
         {
-            return new VectorType(new List<BaseType>
+            return new ArrayType(new List<BaseType>
             {
                 x
             });

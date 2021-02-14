@@ -17,7 +17,7 @@ namespace CMLisp.Core
         public static string InterpretToString(string input)
         {
             var readResult = Read(input);
-            var printResult = Evaluate(readResult);//Printer.Parse(readResult);
+            var printResult = Printer.Parse(readResult);
             return printResult;
         }
 
@@ -28,7 +28,7 @@ namespace CMLisp.Core
 
         private static string Evaluate(BaseType input)
         {
-            return Evaluator.Evaluate(input).Value;
+            return Evaluator.Evaluate(input).Value.ToString();
         }
     }
 }

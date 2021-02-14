@@ -12,7 +12,7 @@ namespace CMLisp.Types
         Symbol,
         List,
         Nil,
-        Vector,
+        Array,
         Keyword,
         HashMap,
         Identifier,

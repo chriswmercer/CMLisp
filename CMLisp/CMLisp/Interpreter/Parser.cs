@@ -30,9 +30,9 @@ namespace CMLisp.Core
             {
                 returnValue = ReadList(reader, LanguageTypes.List);
             }
-            else if (firstCharacter == OpeningCharacterFor(LanguageTypes.Vector))
+            else if (firstCharacter == OpeningCharacterFor(LanguageTypes.Array))
             {
-                returnValue = ReadList(reader, LanguageTypes.Vector);
+                returnValue = ReadList(reader, LanguageTypes.Array);
             }
             else if (firstCharacter == OpeningCharacterFor(LanguageTypes.HashMap))
             {
@@ -96,7 +96,7 @@ namespace CMLisp.Core
                 return new SymbolType(stringType.Value);
             }
 
-            if (Keywords.IsKnown(stringType.Value))
+            if (Language.Keywords.IsKnown(stringType.Value))
             {
                 return new KeywordType(stringType.Value);
             }
@@ -167,7 +167,7 @@ namespace CMLisp.Core
             switch(type)
             {
                 case LanguageTypes.List: return "(";
-                case LanguageTypes.Vector: return "[";
+                case LanguageTypes.Array: return "[";
                 case LanguageTypes.HashMap: return "{";
                 default: throw new ArgumentException($"{type} is not a valid type with a required opening character");
             }
@@ -178,7 +178,7 @@ namespace CMLisp.Core
             switch (type)
             {
                 case LanguageTypes.List: return ")";
-                case LanguageTypes.Vector: return "]";
+                case LanguageTypes.Array: return "]";
                 case LanguageTypes.HashMap: return "}";
                 default: throw new ArgumentException($"{type} is not a valid type with a required closing character");
             }
@@ -189,7 +189,7 @@ namespace CMLisp.Core
             switch (type)
             {
                 case LanguageTypes.List: return new ListContainer(tokens);
-                case LanguageTypes.Vector: return new VectorType(tokens);
+                case LanguageTypes.Array: return new ArrayType(tokens);
                 case LanguageTypes.HashMap: return new HashMapType(HashMapGenerator(tokens));
                 default: throw new ArgumentException($"{type} is not a valid list/vector/hashmap type");
             }

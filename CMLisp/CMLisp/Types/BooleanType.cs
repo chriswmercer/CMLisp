@@ -39,9 +39,9 @@ namespace CMLisp.Types
             return new StringType((bool)x.Value ? "true" : "false");
         }
 
-        public static implicit operator VectorType(BooleanType x)
+        public static implicit operator ArrayType(BooleanType x)
         {
-            return new VectorType(new List<BaseType>
+            return new ArrayType(new List<BaseType>
             {
                 x
             });

@@ -15,7 +15,7 @@ namespace CMLisp.REPL
             {
                 Console.Write("cmlisp> ");
                 input = Console.ReadLine();
-                var output = Interpreter.InterpretToString(input);
+                var output = Interpreter.Interpret(input);
                 Console.WriteLine(output);
             }
         }

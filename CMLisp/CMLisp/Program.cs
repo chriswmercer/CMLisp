@@ -6,7 +6,7 @@ namespace CMLisp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("CMLisp - type 'exit' to exit;");
 
             REPL.REPL.Run();
         }

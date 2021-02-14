@@ -17,7 +17,7 @@ namespace CMLisp.Core
             string returnValue = new string(' ', indentation);
             if (indentation == 0) returnValue += "ROOT\n";
 
-            if (input.Type == LanguageTypes.List || input.Type == LanguageTypes.Vector || input.Type == LanguageTypes.HashMap)
+            if (input.Type == LanguageTypes.List || input.Type == LanguageTypes.Array || input.Type == LanguageTypes.HashMap)
             {
                 returnValue += ReadList(input as ListContainer, indentation + 1);
             }

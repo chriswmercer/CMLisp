@@ -34,9 +34,9 @@ namespace CMLisp.Types
             return new StringType(((int)x.Value).ToString());
         }
 
-        public static implicit operator VectorType(IntegerType x)
+        public static implicit operator ArrayType(IntegerType x)
         {
-            return new VectorType(new List<BaseType>
+            return new ArrayType(new List<BaseType>
             {
                 x
             });
