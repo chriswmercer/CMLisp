@@ -14,4 +14,15 @@
     <Folder Include="Exceptions\" />
     <Folder Include="Keywords\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Examples\example1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\example2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\example2 %28copy%29.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

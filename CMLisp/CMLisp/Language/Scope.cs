@@ -25,11 +25,11 @@ namespace CMLisp.Language
             Items.Add(element);
         }
 
-        public BaseType Get(string identifier)
+        public ScopeElement Get(string identifier)
         {
             if(Items.Any(item => item.Label == identifier))
             {
-                return Items.First(item => item.Label == identifier).Value;
+                return Items.First(item => item.Label == identifier);
             }
             else
             {

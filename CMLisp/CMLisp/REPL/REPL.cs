@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using CMLisp.Core;
 using CMLisp.Language;
 
@@ -13,10 +14,47 @@ namespace CMLisp.REPL
 
             while(input.ToLower() != "exit")
             {
-                Console.Write("cmlisp> ");
+                Console.Write("\ncmlisp> ");
                 input = Console.ReadLine();
-                var output = Interpreter.Interpret(input);
-                Console.WriteLine(output);
+
+                if(input.ToLower().StartsWith("run"))
+                {
+                    var parsedCommand = input.Split("\"");
+
+                    if (parsedCommand.Length < 2)
+                    {
+                        Console.WriteLine("Usage: run \"c:\\full\\path\\to\\filename.txt\"");
+                    }
+                    else
+                    {
+                        var filename = parsedCommand[1];
+
+                        if (!File.Exists(filename))
+                        {
+                            Console.Write($"Filename \"{ filename }\" was not found, or you do not have permissions to read it.");
+                        }
+                        else
+                        {
+                            string file = "";
+                            try
+                            {
+                                file = File.ReadAllText(filename);
+                            }
+                            catch (Exception exc)
+                            {
+                                throw new FileNotFoundException($"Could not load the file { filename }. See inner exception for more details.", exc);
+                            }
+
+                            var output = Interpreter.Interpret(file);
+                            Console.WriteLine(output);
+                        }
+                    }
+                }
+                else
+                {
+                    var output = Interpreter.Interpret(input);
+                    Console.WriteLine(output);
+                }
             }
         }
     }

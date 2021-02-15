@@ -1,0 +1,9 @@
+﻿(
+    (variable a 6)
+
+    (function main
+        (+ a 3)
+    )
+
+    (main)
+) 

@@ -6,5 +6,10 @@ namespace CMLisp.Exceptions
         public SyntaxException(string error) : base(error)
         {
         }
+
+        public SyntaxException(string error, Exception innerException) : base (error, innerException)
+        {
+
+        }
     }
 }

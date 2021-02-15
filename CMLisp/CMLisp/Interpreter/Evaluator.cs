@@ -13,7 +13,9 @@ namespace CMLisp.Core
 
         public static BaseType Evaluate(BaseType input)
         {
-            return EvaluateAST(input);
+            Scope = new Scope();
+            var returnValue = EvaluateAST(input);
+            return returnValue;
         }
 
         private static BaseType EvaluateAST(BaseType input)
@@ -21,6 +23,15 @@ namespace CMLisp.Core
             if (input.Type == LanguageTypes.List)
             {
                 var list = input as ListContainer;
+
+                //remove nils
+                list.Value = list.Value.Where(x => x.Type != LanguageTypes.Nil).ToList();
+
+                if (list.Value.Count == 1 && list.Value[0].Type == LanguageTypes.List)
+                {
+                    list = list.Value[0] as ListContainer;
+                    list = EvaluateAST(list) as ListContainer;
+                }
 
                 BaseType functor = SplitForOperation(list, out BaseType[] operands);
 
@@ -36,14 +47,31 @@ namespace CMLisp.Core
                     {
                         var item = list.Value[i];
 
-                        if (item.Type == LanguageTypes.List || item.Type == LanguageTypes.Identifier)
+                        if (item.Type == LanguageTypes.Identifier)
                         {
                             list.Value[i] = EvaluateAST(item);
                         }
+                        else if (item.Type == LanguageTypes.List)
+                        {
+                            while (list.Value[i].Type == LanguageTypes.List)
+                            {
+                                list.Value[i] = EvaluateAST(item);
+                            }
+                        }
                     }
+
+                    //need to remove nils - these are likely functions/identifiers
+                    list.Value = list.Value.Where(item => item.Type != LanguageTypes.Nil).ToList();
 
                     //need to refresh operands as they may have been evaluated out
                     functor = SplitForOperation(list, out operands);
+
+                    if(functor.Type == LanguageTypes.List)
+                    {
+                        var newList = (functor as ListContainer).Value.FirstOrDefault();
+                        return EvaluateAST(newList);
+                    }
+
                     Func<BaseType[], BaseType> func = Symbols.FunctionFor(functor.Value);
 
                     try
@@ -59,7 +87,8 @@ namespace CMLisp.Core
             }
             else if(input.Type == LanguageTypes.Identifier)
             {
-                return Scope.Get(input.Value.ToString());
+                ScopeElement item = Scope.Get(input.Value.ToString());
+                return item.Value;
             }
             else
             {
@@ -74,6 +103,7 @@ namespace CMLisp.Core
             var items = list.Value;
             var symbols = items.Where(item => item.Type == LanguageTypes.Symbol);
             var keywords = items.Where(item => item.Type == LanguageTypes.Keyword);
+            var identifiers = items.Where(item => item.Type == LanguageTypes.Identifier);
 
             if (symbols.Count() > 1) throw new SyntaxException("Each list must only have 1 symbol");
             if (keywords.Count() > 1) throw new SyntaxException("Each list must only have 1 keyword");
@@ -83,10 +113,40 @@ namespace CMLisp.Core
                 returnType = new SymbolType(symbols.First().Value);
                 operands = items.Where(item => item.Type != LanguageTypes.Symbol && item.Type != LanguageTypes.Nil).ToArray();
             }
-            else
+            else if (keywords.Any())
             {
                 returnType = new KeywordType(keywords.First().Value);
                 operands = items.Where(item => item.Type != LanguageTypes.Keyword && item.Type != LanguageTypes.Nil).ToArray();
+            }
+            else if (identifiers.Any())
+            {
+                var identifier = identifiers.First();
+
+                try
+                {
+                    ScopeElement lookup = Scope.Get(identifier.Value.ToString());
+
+                    if(!lookup.IsFunction)
+                    {
+                        throw new SyntaxException("The first identifier must be a function");
+                    }
+                    else
+                    {
+                        returnType = new IdentifierType(identifier.Value);
+                        operands = identifiers.Where(id => id.Value != identifier.Value).ToArray();
+                    }
+                }
+                catch (Exception exc)
+                {
+                    throw new SyntaxException("There were no symbols, keywords, or function identifiers given. See inner exception for more details", exc);
+                }
+
+            }
+            else
+            {
+                //nil type as there is nothign to evaluate, only more lists
+                returnType = new ListContainer(items);
+                operands = items.ToArray();
             }
 
             return returnType;
