@@ -10,3 +10,4 @@
 - Add open text file functionality
 - Add "is" keyword required for variables, although it does nothing
 - Add guard to check identifiers exist in scope else exception
+- Add test statements
