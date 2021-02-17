@@ -34,9 +34,9 @@ namespace CMLisp.Core
             {
                 returnValue = ReadList(reader, LanguageTypes.Array);
             }
-            else if (firstCharacter == OpeningCharacterFor(LanguageTypes.HashMap))
+            else if (firstCharacter == OpeningCharacterFor(LanguageTypes.Object))
             {
-                returnValue = ReadList(reader, LanguageTypes.HashMap);
+                returnValue = ReadList(reader, LanguageTypes.Object);
             }
             else
             {
@@ -168,7 +168,7 @@ namespace CMLisp.Core
             {
                 case LanguageTypes.List: return "(";
                 case LanguageTypes.Array: return "[";
-                case LanguageTypes.HashMap: return "{";
+                case LanguageTypes.Object: return "{";
                 default: throw new ArgumentException($"{type} is not a valid type with a required opening character");
             }
         }
@@ -179,7 +179,7 @@ namespace CMLisp.Core
             {
                 case LanguageTypes.List: return ")";
                 case LanguageTypes.Array: return "]";
-                case LanguageTypes.HashMap: return "}";
+                case LanguageTypes.Object: return "}";
                 default: throw new ArgumentException($"{type} is not a valid type with a required closing character");
             }
         }
@@ -190,7 +190,7 @@ namespace CMLisp.Core
             {
                 case LanguageTypes.List: return new ListContainer(tokens);
                 case LanguageTypes.Array: return new ArrayType(tokens);
-                case LanguageTypes.HashMap: return new HashMapType(HashMapGenerator(tokens));
+                case LanguageTypes.Object: return new ObjectType(HashMapGenerator(tokens));
                 default: throw new ArgumentException($"{type} is not a valid list/vector/hashmap type");
             }
         }

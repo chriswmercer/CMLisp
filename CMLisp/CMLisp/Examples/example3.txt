@@ -2,7 +2,7 @@
     (variable a 6)
 
     (function add3
-        (+ a 3)
+        (a + 3)
     )
 
     (function main

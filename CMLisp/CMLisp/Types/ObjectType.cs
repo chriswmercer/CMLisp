@@ -5,11 +5,11 @@ using CMLisp.Language;
 
 namespace CMLisp.Types
 {
-    public class HashMapType : ListContainer
+    public class ObjectType : ListContainer
     {
-        public HashMapType(List<BaseType> val) : base(val)
+        public ObjectType(List<BaseType> val) : base(val)
         {
-            Type = LanguageTypes.HashMap;
+            Type = LanguageTypes.Object;
         }
 
         public BaseType this[string key]

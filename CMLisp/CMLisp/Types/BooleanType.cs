@@ -11,11 +11,6 @@ namespace CMLisp.Types
             Type = LanguageTypes.Boolean;
         }
 
-        //public static implicit operator BooleanType(DecimalType x)
-        //{
-        //    return new BooleanType((decimal)x.Value > 0 ? true : false);
-        //}
-
         public static implicit operator DecimalType(BooleanType x)
         {
             return new DecimalType((bool)x.Value ? 1 : 0);

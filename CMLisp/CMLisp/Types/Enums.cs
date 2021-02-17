@@ -14,7 +14,7 @@ namespace CMLisp.Types
         Nil,
         Array,
         Keyword,
-        HashMap,
+        Object,
         Identifier,
         Fragment,
         KeyValuePair
