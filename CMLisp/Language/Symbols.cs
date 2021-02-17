@@ -37,15 +37,15 @@ namespace CMLisp.Language
             {
                 if (value == null)
                 {
-                    value = item.Value;
+                    value = item;
                 }
                 else
                 {
-                    value += item.Value;
+                    value += item;
                 }
             }
 
-            return GeneratorFor(items[0].Type, value);
+            return BaseType.GeneratorFor(items[0].Type, value.Value);
         }
 
         private static BaseType MinusSumOf(BaseType[] items)
@@ -64,7 +64,7 @@ namespace CMLisp.Language
                 }
             }
 
-            return GeneratorFor(items[0].Type, value);
+            return BaseType.GeneratorFor(items[0].Type, value);
         }
 
         private static BaseType ProductOf(BaseType[] items)
@@ -83,7 +83,7 @@ namespace CMLisp.Language
                 }
             }
 
-            return GeneratorFor(items[0].Type, value);
+            return BaseType.GeneratorFor(items[0].Type, value);
         }
 
         private static BaseType DivisorOf(BaseType[] items)
@@ -102,7 +102,7 @@ namespace CMLisp.Language
                 }
             }
 
-            return GeneratorFor(items[0].Type, value);
+            return BaseType.GeneratorFor(items[0].Type, value);
         }
 
         private static BaseType EqualityOf(BaseType[] items)
@@ -139,15 +139,6 @@ namespace CMLisp.Language
             }
 
             return new BooleanType(returnValue);
-        }
-
-        private static BaseType GeneratorFor(LanguageTypes type, dynamic value)
-        {
-            switch(type)
-            {
-                case LanguageTypes.Integer: return new IntegerType(value);
-                default: throw new Exception("Could not determine type");
-            }
         }
     }
 }

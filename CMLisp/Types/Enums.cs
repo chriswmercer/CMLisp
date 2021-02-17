@@ -17,6 +17,7 @@ namespace CMLisp.Types
         Object,
         Identifier,
         Fragment,
-        KeyValuePair
+        KeyValuePair,
+        ReservedWord
     }
 }

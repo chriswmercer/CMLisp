@@ -1,0 +1,14 @@
+﻿; example with keyword short forms
+(
+    (var a is 6)
+
+    (fun add3
+        (a + 3)
+    )
+
+    (func main
+        (add3)
+    )
+
+    (main)
+) 

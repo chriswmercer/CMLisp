@@ -1,5 +1,5 @@
 ﻿(
-    (variable a 6)
+    (variable a is 6)
 
     (function add3
         (a + 3)

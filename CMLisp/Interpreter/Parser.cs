@@ -91,6 +91,11 @@ namespace CMLisp.Core
                 return new BooleanType(stringType.Value.ToLower() == "true");
             }
 
+            if(ReservedWords.IsKnown(stringType.Value))
+            {
+                return new ReservedWordType(stringType.Value);
+            }
+
             if (Symbols.IsKnown(stringType.Value))
             {
                 return new SymbolType(stringType.Value);
@@ -190,12 +195,12 @@ namespace CMLisp.Core
             {
                 case LanguageTypes.List: return new ListContainer(tokens);
                 case LanguageTypes.Array: return new ArrayType(tokens);
-                case LanguageTypes.Object: return new ObjectType(HashMapGenerator(tokens));
+                case LanguageTypes.Object: return new ObjectType(ArrayGenerator(tokens));
                 default: throw new ArgumentException($"{type} is not a valid list/vector/hashmap type");
             }
         }
 
-        private static List<BaseType> HashMapGenerator(List<BaseType> tokens)
+        private static List<BaseType> ArrayGenerator(List<BaseType> tokens)
         {
             List<BaseType> returnList = new List<BaseType>();
 

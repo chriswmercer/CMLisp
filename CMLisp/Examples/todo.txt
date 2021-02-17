@@ -1,11 +1,17 @@
 - Fix implicit casts
 - Fix symbol operations to use those casts
+(int is done, string is done)
+
 - Add useful symbol operations e.g. + string = concat
+string done for +
+
 - Fix tokenising to correctly build fragments
 - Add concept of local scope to functions
 - Add into operator => for functions, objects, arrays and fragments
 - Add keywords: for, concatenate, reverse, etc
 - For keyword lookup add being able to find based on fewest letters e.g. con = concatenate
+(done)
+
 - Add web server functionality
 - Add open text file functionality
 - Add "is" keyword required for variables, although it does nothing

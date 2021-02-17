@@ -14,9 +14,13 @@ namespace CMLisp.Types
         {
             try
             {
-                return x.Value + y.Value;
+                switch(x.Type)
+                {
+                    case LanguageTypes.String: return GeneratorFor(LanguageTypes.String, string.Concat(x.Value, y.Value));
+                    default: return GeneratorFor(x.Type, x.Value + y.Value);
+                }
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 throw new ArgumentException("Failed default operator+ function. See innner exception for more details.", exc);
             }
@@ -26,7 +30,7 @@ namespace CMLisp.Types
         {
             try
             {
-                return x.Value - y.Value;
+                return GeneratorFor(x.Type, x.Value - y.Value);
             }
             catch (Exception exc)
             {
@@ -38,7 +42,7 @@ namespace CMLisp.Types
         {
             try
             {
-                return x.Value * y.Value;
+                return GeneratorFor(x.Type, x.Value * y.Value);
             }
             catch (Exception exc)
             {
@@ -50,7 +54,7 @@ namespace CMLisp.Types
         {
             try
             {
-                return x.Value / y.Value;
+                return GeneratorFor(x.Type, x.Value / y.Value);
             }
             catch (Exception exc)
             {
@@ -58,11 +62,11 @@ namespace CMLisp.Types
             }
         }
 
-        public static BaseType operator ==(BaseType x, BaseType y)
+        public static bool operator ==(BaseType x, BaseType y)
         {
             try
             {
-                return x.Value == y.Value;
+                return x?.Value == y?.Value;
             }
             catch (Exception exc)
             {
@@ -70,7 +74,7 @@ namespace CMLisp.Types
             }
         }
 
-        public static BaseType operator !=(BaseType x, BaseType y)
+        public static bool operator !=(BaseType x, BaseType y)
         {
             try
             {
@@ -100,6 +104,16 @@ namespace CMLisp.Types
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        internal static BaseType GeneratorFor(LanguageTypes type, dynamic value)
+        {
+            switch (type)
+            {
+                case LanguageTypes.Integer: return new IntegerType(value);
+                case LanguageTypes.String: return new StringType(value);
+                default: throw new Exception("Could not determine type");
+            }
         }
     }
 }
