@@ -37,3 +37,19 @@ Fragment    contact		x			int 		x					interpolate destination
 KVP 		x			x			object 		x					interpolate source
 Nil			x			x			x			x			nil only
 Object      KVP 		KVP by key 	object 		x					interpolate destination, interpolate source
+
+("test" + "string")
+("test" * 2)
+(1 + 2)
+(1 * 2)
+(2 - 1)
+(4 / 2)
+(1.1 + 1.2)
+(2.5 - 1.5)
+(2.5 * 2.5)
+(5.5 / 2.5)
+(1.1 + 2)
+(3.4 - 2)
+(3.5 * 2)
+(10.75 / 2.5)
+

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CMLisp.Language;
+using CMLisp.Operations;
 using CMLisp.Types;
 
 namespace CMLisp.Language
@@ -9,9 +10,9 @@ namespace CMLisp.Language
     {
         private static Dictionary<string, Func<BaseType[], BaseType>> FunctionLookup = new Dictionary<string, Func<BaseType[], BaseType>>()
         {
-            {"+", (x) => SumOf(x)},
+            {"+", (x) => Addition.SumOf(x)},
             {"-", (x) => MinusSumOf(x)},
-            {"*", (x) => ProductOf(x)},
+            {"*", (x) => Multiplication.ProductOf(x)},
             {"/", (x) => DivisorOf(x)},
             {"=", (x) => EqualityOf(x) },
             {"==", (x) => EqualityOf(x)},
@@ -29,25 +30,6 @@ namespace CMLisp.Language
             return FunctionLookup.ContainsKey(potentialSymbol);
         }
 
-        private static BaseType SumOf(BaseType[] items)
-        {
-            dynamic value = null;
-
-            foreach(var item in items)
-            {
-                if (value == null)
-                {
-                    value = item;
-                }
-                else
-                {
-                    value += item;
-                }
-            }
-
-            return BaseType.GeneratorFor(items[0].Type, value.Value);
-        }
-
         private static BaseType MinusSumOf(BaseType[] items)
         {
             dynamic value = null;
@@ -61,25 +43,6 @@ namespace CMLisp.Language
                 else
                 {
                     value -= item.Value;
-                }
-            }
-
-            return BaseType.GeneratorFor(items[0].Type, value);
-        }
-
-        private static BaseType ProductOf(BaseType[] items)
-        {
-            dynamic value = null;
-
-            foreach (var item in items)
-            {
-                if (value == null)
-                {
-                    value = item.Value;
-                }
-                else
-                {
-                    value *= item.Value;
                 }
             }
 
