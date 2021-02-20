@@ -40,6 +40,11 @@ namespace CMLisp.Operations
             return BaseType.GeneratorFor(LanguageTypes.Decimal, (Decimal)x.Value + (Decimal)y.Value) as DecimalType;
         }
 
+        private static DecimalType Add(DecimalType x, IntegerType y)
+        {
+            return BaseType.GeneratorFor(LanguageTypes.Decimal, (Decimal)x.Value + Convert.ToDecimal(y.Value)) as DecimalType;
+        }
+
         private static ArrayType Add(ArrayType x, ArrayType y)
         {
             List<BaseType> newList = (List<BaseType>)x.Value;

@@ -1,6 +1,7 @@
-﻿; TypesStringIntDecimalTests.txt
-(
+﻿; run "Examples/typetests.txt"
+(printline
     (1 + 2)
+    (+ 2 3 4 5)
     (1 * 2)
     (2 - 1)
     (4 / 2)
@@ -14,4 +15,10 @@
     (3.4 - 2)
     (3.5 * 2)
     (10.75 / 2.5)
+    ([1, 2, 3] + [4, 5])
+    ([1, 2, 3] + 4)
+    ;(true and false)
+    ;(true or false)
+    ;(true xor true)
+    ;(not true)
 )

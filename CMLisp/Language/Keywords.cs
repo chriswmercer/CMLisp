@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CMLisp.Keywords;
 using CMLisp.Language;
+using CMLisp.Operations;
 using CMLisp.Types;
 
 namespace CMLisp.Language
@@ -13,7 +14,10 @@ namespace CMLisp.Language
         {
             {"if", (x) => new IfKeyword().Evaluate(x) },
             {"variable", (x) => new VariableKeyword().Evaluate(x) },
-            {"function", (x) => new FunctionKeyword().Evaluate(x) }
+            {"function", (x) => new FunctionKeyword().Evaluate(x) },
+            { "print", (x) => new PrintKeyword().Evaluate(x) },
+            { "printline", (x) => new PrintLineKeyword().Evaluate(x) },
+            //{ "and", (x) => Equality.EqualityOf(x) }
         };
 
         public static Func<BaseType[], BaseType> FunctionFor(string functionName)
@@ -21,8 +25,14 @@ namespace CMLisp.Language
             try
             {
                 if(functionName.Length < 3) throw new MissingFieldException();
+
                 var functions = FunctionLookup.Where(fn => fn.Key.ToLower().StartsWith(functionName.ToLower()));
+                if (functions.Count() != 1)
+                {
+                    functions = FunctionLookup.Where(fn => fn.Key.ToLower() == functionName.ToLower());
+                }
                 if (functions.Count() != 1) throw new MissingMethodException();
+
                 return functions.First().Value;
             }
             catch (MissingMethodException mme)
@@ -40,7 +50,14 @@ namespace CMLisp.Language
             try
             {
                 var functions = FunctionLookup.Where(fn => fn.Key.ToLower().StartsWith(potentialKeyword.ToLower()));
+
+                if (functions.Count() != 1)
+                {
+                    functions = FunctionLookup.Where(fn => fn.Key.ToLower() == potentialKeyword.ToLower());
+                }
+
                 if (functions.Count() != 1) throw new MissingMethodException();
+
                 return true;
             }
             catch

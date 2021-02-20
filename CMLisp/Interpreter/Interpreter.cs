@@ -9,9 +9,20 @@ namespace CMLisp.Core
     {
         public static string Interpret(string input)
         {
-            var readResult = Read(input);
-            var evaluateResult = Evaluate(readResult);
-            return evaluateResult;
+            try
+            {
+                var readResult = Read(input);
+                var evaluateResult = Evaluate(readResult);
+
+                //we don't want to display nils
+                if (evaluateResult == "Nil") evaluateResult = string.Empty;
+
+                return evaluateResult;
+            }
+            catch (Exception exc)
+            {
+                return exc.Message;
+            }
         }
 
         public static string InterpretToString(string input)

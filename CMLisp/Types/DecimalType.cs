@@ -10,36 +10,5 @@ namespace CMLisp.Types
         {
             Type = LanguageTypes.Decimal;
         }
-
-        public static implicit operator BooleanType(DecimalType x)
-        {
-            return new BooleanType((decimal)x.Value > 0 ? true : false);
-        }
-
-        public static implicit operator IntegerType(DecimalType x)
-        {
-            return new IntegerType((int)x.Value);
-        }
-
-        public static implicit operator ListContainer(DecimalType x)
-        {
-            return new ListContainer(new List<BaseType>
-            {
-                x
-            });
-        }
-
-        public static implicit operator StringType(DecimalType x)
-        {
-            return new StringType(((decimal)x.Value).ToString());
-        }
-
-        public static implicit operator ArrayType(DecimalType x)
-        {
-            return new ArrayType(new List<BaseType>
-            {
-                x
-            });
-        }
     }
 }

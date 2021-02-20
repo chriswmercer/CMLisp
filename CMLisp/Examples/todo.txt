@@ -17,6 +17,7 @@ Special operators moved to be in the types class
 - Add guard to check identifiers exist in scope else exception
 - Add test statements
 - Add catch (1 catch per scope, registered as a special type of function)
+- Ensure only interpreter is public rest is internal
 
 CONSIDER
 - Add "is" keyword required for variables, although it does nothing --? optional? for functions too?
@@ -32,24 +33,31 @@ String 		concat  	x   		int 		x 			==		interpolate	destination, interpolate sour
 Integer																interpolate source												
 Decimal																interpolate source
 Array 		add el  	remove el 									interpolate source
+
 Boolean		x			x			x			x	
 Fragment    contact		x			int 		x					interpolate destination
-KVP 		x			x			object 		x					interpolate source
+KVP 		x			x			x    		x					interpolate source
 Nil			x			x			x			x			nil only
-Object      KVP 		KVP by key 	object 		x					interpolate destination, interpolate source
+Object      x 		    x    		x					            interpolate destination, interpolate source
 
-("test" + "string")
-("test" * 2)
-(1 + 2)
-(1 * 2)
-(2 - 1)
-(4 / 2)
-(1.1 + 1.2)
-(2.5 - 1.5)
-(2.5 * 2.5)
-(5.5 / 2.5)
-(1.1 + 2)
-(3.4 - 2)
-(3.5 * 2)
-(10.75 / 2.5)
+    (1 + 2)
+    (1 * 2)
+    (2 - 1)
+    (4 / 2)
+    ("test" + "string")
+    ("test" * 2)
+    (1.1 + 1.2)
+    (2.5 - 1.5)
+    (2.5 * 2.5)
+    (5.5 / 2.5)
+    (1.1 + 2)
+    (3.4 - 2)
+    (3.5 * 2)
+    (10.75 / 2.5)
+    ([1, 2, 3] + [4, 5])
+    ([1, 2, 3] + 4)
+    (true and false)
+    (true or false)
+    (true xor true)
+    (not true)
 
