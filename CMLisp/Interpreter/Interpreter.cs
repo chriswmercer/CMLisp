@@ -39,6 +39,7 @@ namespace CMLisp.Core
 
         private static string Evaluate(BaseType input)
         {
+            Evaluator.GlobalScope = new Scope();
             return Evaluator.Evaluate(input).Value.ToString();
         }
     }

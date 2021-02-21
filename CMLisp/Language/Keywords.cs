@@ -17,15 +17,14 @@ namespace CMLisp.Language
             {"function", (x) => new FunctionKeyword().Evaluate(x) },
             { "print", (x) => new PrintKeyword().Evaluate(x) },
             { "printline", (x) => new PrintLineKeyword().Evaluate(x) },
-            //{ "and", (x) => Equality.EqualityOf(x) }
+            { "=>", (x) => InterpolationKeyword.Evaluate(x) },
+            { "interpolate", (x) => InterpolationKeyword.Evaluate(x) }
         };
 
         public static Func<BaseType[], BaseType> FunctionFor(string functionName)
         {
             try
             {
-                if(functionName.Length < 3) throw new MissingFieldException();
-
                 var functions = FunctionLookup.Where(fn => fn.Key.ToLower().StartsWith(functionName.ToLower()));
                 if (functions.Count() != 1)
                 {

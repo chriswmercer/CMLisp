@@ -6,6 +6,7 @@
 string done for +
 Special operators moved to be in the types class 
 
+- > < >= <= ? operators
 
 - Fix tokenising to correctly build fragments
 - Add concept of local scope to functions

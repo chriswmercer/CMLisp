@@ -16,7 +16,11 @@ namespace CMLisp.Language
             {"/", (x) => Division.DivisorOf(x)},
             {"=", (x) => Equality.EqualityOf(x) },
             {"==", (x) => Equality.EqualityOf(x)},
-            {"!=", (x) => new BooleanType(!(Equality.EqualityOf(x).Value))}
+            {"!=", (x) => new BooleanType(!(Equality.EqualityOf(x).Value))},
+            {"and", (x) => BooleanLogic.And(x) },
+            {"or", (x) => BooleanLogic.Or(x) },
+            {"xor", (x) => BooleanLogic.Xor(x) },
+            {"not", (x) => BooleanLogic.Not(x) }
         };
 
         public static Func<BaseType[], BaseType> FunctionFor(string functionName)

@@ -9,11 +9,12 @@ namespace CMLisp.Core
 {
     public static class Evaluator
     {
-        public static Scope Scope = new Scope();
+        public static Scope GlobalScope = new Scope();
+        private static Scope LocalScope = null;
 
-        public static BaseType Evaluate(BaseType input)
+        public static BaseType Evaluate(BaseType input, Scope localScope = null)
         {
-            Scope = new Scope();
+            LocalScope = localScope;
             var returnValue = EvaluateAST(input);
             return returnValue;
         }
@@ -87,7 +88,10 @@ namespace CMLisp.Core
             }
             else if(input.Type == LanguageTypes.Identifier)
             {
-                ScopeElement item = Scope.Get(input.Value.ToString());
+                ScopeElement item = LocalScope?.Get(input.Value.ToString()) ?? GlobalScope.Get(input.Value.ToString());
+
+                if (item == null) throw new SyntaxException($"The identifier { input.Value } was not found.");
+
                 return item.Value;
             }
             else
@@ -124,9 +128,9 @@ namespace CMLisp.Core
 
                 try
                 {
-                    ScopeElement lookup = Scope.Get(identifier.Value.ToString());
+                    ScopeElement lookup = LocalScope?.Get(identifier.Value.ToString()) ?? GlobalScope.Get(identifier.Value.ToString());
 
-                    if(!lookup.IsFunction)
+                    if (!lookup.IsFunction)
                     {
                         throw new SyntaxException("The first identifier must be a function");
                     }
@@ -155,6 +159,16 @@ namespace CMLisp.Core
         private static BaseType Apply(Func<BaseType, BaseType, BaseType> function, List<BaseType> items)
         {
             return new NilType();
+        }
+
+        public static bool HasLocalScope()
+        {
+            return LocalScope != null;
+        }
+
+        public static void AddToLocalScope(ScopeElement element)
+        {
+            LocalScope.Add(element);
         }
     }
 }

@@ -1,0 +1,16 @@
+﻿; run "Examples/example5.txt"
+(
+    (var a is 6)
+
+    (fun add3
+        (a + 3)
+    )
+
+    (func main
+        (add3)
+    )
+
+    (var input is { parameter1 : "cheese", parameter2 : "potato" })
+
+    (main)
+) 

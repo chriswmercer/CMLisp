@@ -25,7 +25,8 @@ namespace CMLisp.Types
                         var pair = (KeyValuePair<IdentifierType, BaseType>)kvp.Value;
                         if (pair.Key.Value == key)
                         {
-                            return pair.Value.Value;
+                            var innerValue = pair.Value;
+                            return innerValue;
                         }
                     }
                 }
@@ -53,6 +54,23 @@ namespace CMLisp.Types
                 }
 
                 throw new KeyNotFoundException($"Key { key } was not found.");
+            }
+        }
+
+        public string[] Keys
+        {
+            get
+            {
+                List<string> keys = new List<string>();
+
+                foreach (var value in this.Value)
+                {
+                    var kvp = value as KeyValuePairType;
+                    var key = (KeyValuePair<IdentifierType, BaseType>)kvp.Value;
+                    keys.Add(key.Key.Value);
+                }
+
+                return keys.ToArray();
             }
         }
     }

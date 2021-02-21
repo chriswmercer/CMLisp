@@ -16,7 +16,15 @@ namespace CMLisp.Keywords
             }
 
             ScopeElement element = new ScopeElement(input[0] as IdentifierType, input[1], true);
-            Evaluator.Scope.Add(element);
+
+            if (Evaluator.HasLocalScope())
+            {
+                Evaluator.AddToLocalScope(element);
+            }
+            else
+            {
+                Evaluator.GlobalScope.Add(element);
+            }
 
             return new NilType();
         }

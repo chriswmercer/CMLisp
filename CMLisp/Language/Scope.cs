@@ -33,7 +33,7 @@ namespace CMLisp.Language
             }
             else
             {
-                throw new ScopeException($"The identifier { identifier } does not exist in scope");
+                return null;
             }
         }
     }
