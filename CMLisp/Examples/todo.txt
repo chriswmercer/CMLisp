@@ -1,49 +1,41 @@
-- Fix implicit casts
-- Fix symbol operations to use those casts
-(int is done, string is done)
 
-- Add useful symbol operations e.g. + string = concat
-string done for +
-Special operators moved to be in the types class 
+- Add guard to check identifiers exist in scope else exception
+- Fix tokenising to correctly build fragments
+- Add into operator => for functions, strings, fragments - functions done
 
 - > < >= <= ? operators
-
-- Fix tokenising to correctly build fragments
-- Add concept of local scope to functions
-- Add into operator => for functions, objects, arrays and fragments
 - Add keywords: for, concatenate, reverse, etc
-
 - Add web server functionality
 - Add open text file functionality
-- Add guard to check identifiers exist in scope else exception
 - Add test statements
 - Add catch (1 catch per scope, registered as a special type of function)
 - Ensure only interpreter is public rest is internal
 - Promote keyword
-- Check scope is working correctly
 - Interpolation works correctly for different types, key for it as part of interface
 - DateTime type
-
-CONSIDER
-- Add "is" keyword required for variables, although it does nothing --? optional? for functions too?
+- IS for function?
 
 
 DONE
-- For keyword lookup add being able to find based on fewest letters e.g. con = concatenate
+- keyword lookup add being able to find based on fewest letters e.g. con = concatenate
+- Fix implicit casts
+- Fix symbol operations to use those casts (int is done, string is done)
+- Add useful symbol operations e.g. + string = concat string done for + Special operators moved to be in the types class  
+- Add concept of local scope to functions
 
 -----
 
-TYPE 		+			-			*			/			==		=>
-String 		concat  	x   		int 		x 			==		interpolate	destination, interpolate source
-Integer																interpolate source												
-Decimal																interpolate source
-Array 		add el  	remove el 									interpolate source
+TYPE 		+			-			*			/			==		
+String 		concat  	x   		int 		x 			==		
+Integer																											
+Decimal																
+Array 		add el  	remove el 									
 
 Boolean		x			x			x			x	
-Fragment    contact		x			int 		x					interpolate destination
-KVP 		x			x			x    		x					interpolate source
+Fragment    contact		x			int 		x					
+KVP 		x			x			x    		x					
 Nil			x			x			x			x			nil only
-Object      x 		    x    		x					            interpolate destination, interpolate source
+Object      x 		    x    		x					            
 
     (1 + 2)
     (1 * 2)
