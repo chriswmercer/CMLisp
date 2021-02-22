@@ -22,6 +22,7 @@ Special operators moved to be in the types class
 - Promote keyword
 - Check scope is working correctly
 - Interpolation works correctly for different types, key for it as part of interface
+- DateTime type
 
 CONSIDER
 - Add "is" keyword required for variables, although it does nothing --? optional? for functions too?
