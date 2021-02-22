@@ -62,7 +62,7 @@ Syntax types are:
 + Identifier type - this is a placeholder type which resolves to either a user-defined function, or a variable of any data type. 
 + Keyword type - each list can contain up to 1 keyword. The evaluator will look up known keywords and, if one is found, pass the operands to the keyword to do something.
 + ReservedWord type - a reserved word is a word or something that is known to the evaluator but doesn't do anything special, and is used to make code read better.
-Symbol type = each list can contain up to 1 symbol. The evaluator will look up known symbols and, if one is found, pass the operands to the symbol to do something.
++ Symbol type = each list can contain up to 1 symbol. The evaluator will look up known symbols and, if one is found, pass the operands to the symbol to do something.
 
 Note - when looking up keywords, you do not need to type the entire keyword, but rather only enough letters so that the evaluator can work out which one you want. For example, the keyword "interpolate" could just be "inte".
 
