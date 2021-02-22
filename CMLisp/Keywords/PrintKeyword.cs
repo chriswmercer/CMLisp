@@ -14,7 +14,7 @@ namespace CMLisp.Keywords
             foreach(var item in input)
             {
                 string result = string.Empty;
-                var evaluated = Evaluator.Evaluate(item);
+                var evaluated = Evaluator.Evaluate(item, Evaluator.LocalScope);
 
                 if(evaluated.Type == LanguageTypes.Array)
                 {

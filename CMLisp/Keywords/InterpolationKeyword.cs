@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CMLisp.Core;
 using CMLisp.Exceptions;
@@ -22,15 +23,17 @@ namespace CMLisp.Keywords
                 //expand it
                 if(source.Type == LanguageTypes.Identifier)
                 {
-                    source = Evaluator.Evaluate(source);
+                    source = Evaluator.Evaluate(source, Evaluator.LocalScope);
                 }
 
                 if(source.Type == LanguageTypes.Object && destination.Type == LanguageTypes.Identifier)
                 {
-                    return Evaluator.Evaluate(destination, BuildLocalScope(source as ObjectType));
+                    Scope localScope = BuildLocalScope(source as ObjectType);
+                    BaseType returnValue = Evaluator.Evaluate(destination, localScope);
+                    return returnValue;
                 }
 
-                return Evaluator.Evaluate(new NilType());
+                return Evaluator.Evaluate(new NilType(), Evaluator.LocalScope);
                 
             }
             catch (Exception exc)

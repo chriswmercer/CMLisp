@@ -50,6 +50,10 @@ namespace CMLisp.REPL
                         }
                     }
                 }
+                else if(input.ToLower() == "exit")
+                {
+                    Console.WriteLine("Goodbye!");
+                }
                 else
                 {
                     var output = Interpreter.Interpret(input);

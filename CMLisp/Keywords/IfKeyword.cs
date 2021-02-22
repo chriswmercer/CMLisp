@@ -30,15 +30,15 @@ namespace CMLisp.Keywords
                     hasFalseCase = false;
                 }
 
-                BooleanType result = Evaluator.Evaluate(input[0]) as BooleanType;
+                BooleanType result = Evaluator.Evaluate(input[0], Evaluator.LocalScope) as BooleanType;
 
                 if((bool)result.Value == true)
                 {
-                    return Evaluator.Evaluate(CaseIfTrue);
+                    return Evaluator.Evaluate(CaseIfTrue, Evaluator.LocalScope);
                 }
                 else if(hasFalseCase)
                 {
-                    return Evaluator.Evaluate(CaseIfFalse);
+                    return Evaluator.Evaluate(CaseIfFalse, Evaluator.LocalScope);
                 }
 
                 return new NilType();

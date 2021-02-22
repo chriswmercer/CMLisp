@@ -19,6 +19,9 @@ Special operators moved to be in the types class
 - Add test statements
 - Add catch (1 catch per scope, registered as a special type of function)
 - Ensure only interpreter is public rest is internal
+- Promote keyword
+- Check scope is working correctly
+- Interpolation works correctly for different types, key for it as part of interface
 
 CONSIDER
 - Add "is" keyword required for variables, although it does nothing --? optional? for functions too?

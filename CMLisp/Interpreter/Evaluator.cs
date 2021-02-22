@@ -10,9 +10,9 @@ namespace CMLisp.Core
     public static class Evaluator
     {
         public static Scope GlobalScope = new Scope();
-        private static Scope LocalScope = null;
+        public static Scope LocalScope = null;
 
-        public static BaseType Evaluate(BaseType input, Scope localScope = null)
+        public static BaseType Evaluate(BaseType input, Scope localScope)
         {
             LocalScope = localScope;
             var returnValue = EvaluateAST(input);
@@ -31,7 +31,7 @@ namespace CMLisp.Core
                 if (list.Value.Count == 1 && list.Value[0].Type == LanguageTypes.List)
                 {
                     list = list.Value[0] as ListContainer;
-                    list = EvaluateAST(list) as ListContainer;
+                    return EvaluateAST(list);
                 }
 
                 BaseType functor = SplitForOperation(list, out BaseType[] operands);
@@ -43,7 +43,7 @@ namespace CMLisp.Core
                 }
                 else
                 {
-
+                    //evaluate out list
                     for (int i = 0; i < list.Value.Count; i++)
                     {
                         var item = list.Value[i];
@@ -56,7 +56,8 @@ namespace CMLisp.Core
                         {
                             while (list.Value[i].Type == LanguageTypes.List)
                             {
-                                list.Value[i] = EvaluateAST(item);
+                                //list.Value[i] = EvaluateAST(item);
+                                list.Value[i] = EvaluateAST(list.Value[i]);
                             }
                         }
                     }
@@ -67,7 +68,28 @@ namespace CMLisp.Core
                     //need to refresh operands as they may have been evaluated out
                     functor = SplitForOperation(list, out operands);
 
-                    if(functor.Type == LanguageTypes.List)
+                    //evaluate out operands
+                    if (operands != null)
+                    {
+                        for (int i = 0; i < operands.Length; i++)
+                        {
+                            var item = operands[i];
+
+                            if (item.Type == LanguageTypes.Identifier)
+                            {
+                                operands[i] = EvaluateAST(item);
+                            }
+                            else if (operands[i].Type == LanguageTypes.List)
+                            {
+                                while (operands[i].Type == LanguageTypes.List)
+                                {
+                                    operands[i] = EvaluateAST(operands[i]);
+                                }
+                            }
+                        }
+                    }
+
+                    if (functor.Type == LanguageTypes.List)
                     {
                         var newList = (functor as ListContainer).Value.FirstOrDefault();
                         return EvaluateAST(newList);
@@ -102,58 +124,65 @@ namespace CMLisp.Core
 
         private static BaseType SplitForOperation(ListContainer list, out BaseType[] operands)
         {
-            BaseType returnType;
-
-            var items = list.Value;
-            var symbols = items.Where(item => item.Type == LanguageTypes.Symbol);
-            var keywords = items.Where(item => item.Type == LanguageTypes.Keyword);
-            var identifiers = items.Where(item => item.Type == LanguageTypes.Identifier);
-
-            if (symbols.Count() > 1) throw new SyntaxException("Each list must only have 1 symbol");
-            if (keywords.Count() > 1) throw new SyntaxException("Each list must only have 1 keyword");
-
-            if (symbols.Any())
+            try
             {
-                returnType = new SymbolType(symbols.First().Value);
-                operands = items.Where(item => item.Type != LanguageTypes.Symbol && item.Type != LanguageTypes.Nil).ToArray();
-            }
-            else if (keywords.Any())
-            {
-                returnType = new KeywordType(keywords.First().Value);
-                operands = items.Where(item => item.Type != LanguageTypes.Keyword && item.Type != LanguageTypes.Nil).ToArray();
-            }
-            else if (identifiers.Any())
-            {
-                var identifier = identifiers.First();
+                BaseType returnType = null;
 
-                try
+                var items = list.Value;
+                var symbols = items.Where(item => item.Type == LanguageTypes.Symbol);
+                var keywords = items.Where(item => item.Type == LanguageTypes.Keyword);
+                var identifiers = items.Where(item => item.Type == LanguageTypes.Identifier);
+
+                if (symbols.Count() > 1) throw new SyntaxException("Each list must only have 1 symbol");
+                if (keywords.Count() > 1) throw new SyntaxException("Each list must only have 1 keyword");
+
+                if (symbols.Any())
                 {
-                    ScopeElement lookup = LocalScope?.Get(identifier.Value.ToString()) ?? GlobalScope.Get(identifier.Value.ToString());
-
-                    if (!lookup.IsFunction)
-                    {
-                        throw new SyntaxException("The first identifier must be a function");
-                    }
-                    else
-                    {
-                        returnType = new IdentifierType(identifier.Value);
-                        operands = identifiers.Where(id => id.Value != identifier.Value).ToArray();
-                    }
+                    returnType = new SymbolType(symbols.First().Value);
+                    operands = items.Where(item => item.Type != LanguageTypes.Symbol && item.Type != LanguageTypes.Nil).ToArray();
                 }
-                catch (Exception exc)
+                else if (keywords.Any())
                 {
-                    throw new SyntaxException("There were no symbols, keywords, or function identifiers given. See inner exception for more details", exc);
+                    returnType = new KeywordType(keywords.First().Value);
+                    operands = items.Where(item => item.Type != LanguageTypes.Keyword && item.Type != LanguageTypes.Nil).ToArray();
+                }
+                else if (identifiers.Any())
+                {
+                    var identifier = identifiers.First();
+
+                    try
+                    {
+                        ScopeElement lookup = LocalScope?.Get(identifier.Value.ToString()) ?? GlobalScope.Get(identifier.Value.ToString());
+
+                        if (!lookup.IsFunction)
+                        {
+                            throw new SyntaxException("The first identifier must be a function");
+                        }
+                        else
+                        {
+                            returnType = new IdentifierType(identifier.Value);
+                            operands = identifiers.Where(id => id.Value != identifier.Value).ToArray();
+                        }
+                    }
+                    catch (Exception exc)
+                    {
+                        throw new SyntaxException("There were no symbols, keywords, or function identifiers given. See inner exception for more details", exc);
+                    }
+
+                }
+                else
+                {
+                    //nil type as there is nothign to evaluate, only more lists
+                    returnType = new ListContainer(items);
+                    operands = items.ToArray();
                 }
 
+                return returnType;
             }
-            else
+            catch(Exception exc)
             {
-                //nil type as there is nothign to evaluate, only more lists
-                returnType = new ListContainer(items);
-                operands = items.ToArray();
+                throw new ArgumentException("There was an error whilst trying to Split for Operation", exc);
             }
-
-            return returnType;
         }
 
         private static BaseType Apply(Func<BaseType, BaseType, BaseType> function, List<BaseType> items)

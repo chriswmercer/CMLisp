@@ -1,4 +1,4 @@
-﻿; run "Examples/example5.txt"
+﻿; run "Examples/example6.txt"
 (
     (var a is 6)
 
@@ -7,7 +7,9 @@
     )
 
     (func main
-        (parameter1 * add3)
+        (if (true = true)
+            (parameter1 * add3)
+        )
     )
 
     (var input is { parameter1 : "cheese", parameter2 : "potato" })
