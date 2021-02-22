@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CMLisp.Core;
-using CMLisp.Exceptions;
-using CMLisp.Language;
 using CMLisp.Types;
 
 namespace CMLisp.Keywords
@@ -32,16 +30,18 @@ namespace CMLisp.Keywords
                 }
                 else
                 {
-                    result = evaluated.Value.ToString();
+                    result = evaluated.Value.ToString().Replace("\\n", "\n");
                 }
+
+                if (result == "Nil") result = "";
 
                 if (newline)
                 {
-                    Console.WriteLine($"{ result } ");
+                    Console.WriteLine($"{ result }");
                 }
                 else
                 {
-                    Console.Write($"{ result } ");
+                    Console.Write($"{ result }");
                 }
             }
 

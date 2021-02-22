@@ -1,0 +1,24 @@
+﻿; run "Examples/example7.txt"
+(
+    (var a is 6)
+
+    (fun add3
+        (
+            (guard a)
+            (a + 3)
+        )
+    )
+
+    (func main
+        (
+            (guard parameter1)
+            (if (true = true)
+                (parameter1 * add3)
+            )
+        )
+    )
+
+    (var input is { parameter1 : "cheese", parameter2 : "potato" })
+
+    (input => main)
+) 

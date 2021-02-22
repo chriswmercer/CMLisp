@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using CMLisp.Language;
 
 namespace CMLisp.Types
 {

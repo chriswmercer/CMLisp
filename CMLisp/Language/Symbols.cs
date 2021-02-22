@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CMLisp.Language;
 using CMLisp.Operations;
 using CMLisp.Types;
 
@@ -20,7 +19,11 @@ namespace CMLisp.Language
             {"and", (x) => BooleanLogic.And(x) },
             {"or", (x) => BooleanLogic.Or(x) },
             {"xor", (x) => BooleanLogic.Xor(x) },
-            {"not", (x) => BooleanLogic.Not(x) }
+            {"not", (x) => BooleanLogic.Not(x) },
+            {">", (x) => Comparison.GreaterThan(x) },
+            {"<", (x) => Comparison.LessThan(x) },
+            {">=", (x) => Comparison.GreaterThanOrEqualTo(x) },
+            {"<=", (x) => Comparison.LessThanOrEqualTo(x) }
         };
 
         public static Func<BaseType[], BaseType> FunctionFor(string functionName)

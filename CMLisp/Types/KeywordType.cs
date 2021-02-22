@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CMLisp.Types
+﻿namespace CMLisp.Types
 {
     public class KeywordType : StringType
     {

@@ -1,7 +1,4 @@
-﻿using System;
-using CMLisp.Language;
-
-namespace CMLisp.Types
+﻿namespace CMLisp.Types
 {
     public class IdentifierType : StringType
     {

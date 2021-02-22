@@ -1,0 +1,25 @@
+﻿; run "Examples/example8.txt"
+(
+    (var a is 6)
+
+    (fun add3
+        (
+            (guard a)
+            (a + 3)
+        )
+    )
+
+    (func main
+        (
+            (catch (print "There was an error\n"))
+            (guard parameter1 lemon)
+            (if (true = true)
+                (parameter1 * add3)
+            )
+        )
+    )
+
+    (var input is { parameter1 : "cheese", parameter2 : "potato" })
+
+    (input => main)
+) 

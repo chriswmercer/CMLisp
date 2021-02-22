@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using CMLisp.Exceptions;
-using CMLisp.Types;
 
 namespace CMLisp.Language
 {

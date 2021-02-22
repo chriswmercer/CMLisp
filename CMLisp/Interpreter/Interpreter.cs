@@ -1,5 +1,4 @@
 ﻿using System;
-using CMLisp.Core;
 using CMLisp.Language;
 using CMLisp.Types;
 
@@ -21,6 +20,7 @@ namespace CMLisp.Core
             }
             catch (Exception exc)
             {
+                //this is where any exceptions during interpretation end up
                 return exc.Message;
             }
         }

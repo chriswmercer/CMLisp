@@ -1,5 +1,4 @@
-﻿using System;
-using CMLisp.Types;
+﻿using CMLisp.Types;
 
 namespace CMLisp.Operations
 {

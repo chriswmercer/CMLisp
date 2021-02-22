@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using CMLisp.Keywords;
-using CMLisp.Language;
-using CMLisp.Operations;
 using CMLisp.Types;
 
 namespace CMLisp.Language
@@ -18,7 +16,9 @@ namespace CMLisp.Language
             { "print", (x) => new PrintKeyword().Evaluate(x) },
             { "printline", (x) => new PrintLineKeyword().Evaluate(x) },
             { "=>", (x) => InterpolationKeyword.Evaluate(x) },
-            { "interpolate", (x) => InterpolationKeyword.Evaluate(x) }
+            { "interpolate", (x) => InterpolationKeyword.Evaluate(x) },
+            { "guard", (x) => new GuardKeyword().Evaluate(x) },
+            { "catch", (x) => new CatchKeyword().Evaluate(x) }
         };
 
         public static Func<BaseType[], BaseType> FunctionFor(string functionName)

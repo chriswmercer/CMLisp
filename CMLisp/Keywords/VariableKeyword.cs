@@ -1,5 +1,4 @@
-﻿using System;
-using CMLisp.Core;
+﻿using CMLisp.Core;
 using CMLisp.Exceptions;
 using CMLisp.Language;
 using CMLisp.Types;
@@ -10,9 +9,14 @@ namespace CMLisp.Keywords
     {
         public BaseType Evaluate(BaseType[] input)
         {
-            if(input.Length != 3 || input[0].Type != LanguageTypes.Identifier || input[1].Value != "is")
+            if(input.Length != 3 || input[0].Type != LanguageTypes.Identifier)
             {
-                throw new SyntaxException("The variable keyword required exactly 3 parameters - an identifier, \"is\" and any base value");
+                throw new LanguageException("The variable keyword required exactly 3 parameters - an identifier, \"is\" and any base value");
+            }
+
+            if (Language.Keywords.IsKnown(input[0].Value) || ReservedWords.IsKnown(input[0].Value))
+            {
+                throw new LanguageException($"The identifer { input[0].Value } is a known identifier or reserved word.");
             }
 
             ScopeElement element = new ScopeElement(input[0] as IdentifierType, input[2]);

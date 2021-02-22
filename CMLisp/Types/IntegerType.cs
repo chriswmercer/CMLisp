@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using CMLisp.Language;
-
-namespace CMLisp.Types
+﻿namespace CMLisp.Types
 {
     public class IntegerType : DynamicType<int>
     {

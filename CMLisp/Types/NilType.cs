@@ -1,5 +1,4 @@
-﻿using System;
-namespace CMLisp.Types
+﻿namespace CMLisp.Types
 {
     public class NilType : DynamicType<object>
     {

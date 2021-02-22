@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using CMLisp.Core;
 using CMLisp.Exceptions;
 using CMLisp.Language;
@@ -38,7 +36,7 @@ namespace CMLisp.Keywords
             }
             catch (Exception exc)
             {
-                throw new SyntaxException("The interpolate keyword requires a valid interpolation source and destination", exc);
+                throw new LanguageException("The interpolate keyword requires a valid interpolation source and destination", exc);
             }
         }
 

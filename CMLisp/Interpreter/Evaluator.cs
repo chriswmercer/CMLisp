@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using CMLisp.Exceptions;
+using CMLisp.Keywords;
 using CMLisp.Language;
 using CMLisp.Types;
 
@@ -38,8 +38,15 @@ namespace CMLisp.Core
 
                 if (functor.Type == LanguageTypes.Keyword)
                 {
-                    var func = Language.Keywords.FunctionFor(functor.Value);
-                    return func(operands);
+                    try
+                    {
+                        var func = Language.Keywords.FunctionFor(functor.Value);
+                        return func(operands);
+                    }
+                    catch (LanguageException exc)
+                    {
+                        return CheckCatch(exc);
+                    }
                 }
                 else
                 {
@@ -99,8 +106,15 @@ namespace CMLisp.Core
 
                     try
                     {
-                        var value = func(operands);
-                        return value;
+                        try
+                        {
+                            var value = func(operands);
+                            return value;
+                        }
+                        catch (LanguageException exc)
+                        {
+                            return CheckCatch(exc);
+                        }
                     }
                     catch (Exception exc)
                     {
@@ -112,7 +126,7 @@ namespace CMLisp.Core
             {
                 ScopeElement item = LocalScope?.Get(input.Value.ToString()) ?? GlobalScope.Get(input.Value.ToString());
 
-                if (item == null) throw new SyntaxException($"The identifier { input.Value } was not found.");
+                if (item == null) throw new LanguageException($"The identifier { input.Value } was not found.");
 
                 return item.Value;
             }
@@ -133,8 +147,8 @@ namespace CMLisp.Core
                 var keywords = items.Where(item => item.Type == LanguageTypes.Keyword);
                 var identifiers = items.Where(item => item.Type == LanguageTypes.Identifier);
 
-                if (symbols.Count() > 1) throw new SyntaxException("Each list must only have 1 symbol");
-                if (keywords.Count() > 1) throw new SyntaxException("Each list must only have 1 keyword");
+                if (symbols.Count() > 1) throw new LanguageException("Each list must only have 1 symbol");
+                if (keywords.Count() > 1) throw new LanguageException("Each list must only have 1 keyword");
 
                 if (symbols.Any())
                 {
@@ -156,7 +170,7 @@ namespace CMLisp.Core
 
                         if (!lookup.IsFunction)
                         {
-                            throw new SyntaxException("The first identifier must be a function");
+                            throw new LanguageException("The first identifier must be a function");
                         }
                         else
                         {
@@ -166,7 +180,7 @@ namespace CMLisp.Core
                     }
                     catch (Exception exc)
                     {
-                        throw new SyntaxException("There were no symbols, keywords, or function identifiers given. See inner exception for more details", exc);
+                        throw new LanguageException("There were no symbols, keywords, or function identifiers given. See inner exception for more details", exc);
                     }
 
                 }
@@ -185,9 +199,18 @@ namespace CMLisp.Core
             }
         }
 
-        private static BaseType Apply(Func<BaseType, BaseType, BaseType> function, List<BaseType> items)
+        private static BaseType CheckCatch(Exception exc)
         {
-            return new NilType();
+            if(HasLocalScope())
+            {
+                ScopeElement item = LocalScope?.Get(CatchKeyword.CatchFunctionName) ?? GlobalScope.Get(CatchKeyword.CatchFunctionName);
+                if(item != null && item.IsFunction)
+                {
+                    return item.Value;
+                }
+            }
+
+            throw exc;
         }
 
         public static bool HasLocalScope()

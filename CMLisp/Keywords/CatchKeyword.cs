@@ -5,16 +5,18 @@ using CMLisp.Types;
 
 namespace CMLisp.Keywords
 {
-    public class FunctionKeyword
+    public class CatchKeyword
     {
+        public static string CatchFunctionName = "catch_fun";
+
         public BaseType Evaluate(BaseType[] input)
         {
-            if (input.Length != 2 || input[0].Type != LanguageTypes.Identifier || input[1].Type != LanguageTypes.List)
+            if (input.Length != 1 || input[0].Type != LanguageTypes.List)
             {
-                throw new LanguageException("The function keyword required exactly 2 parameters - an identifier and a list value");
+                throw new LanguageException("The catch keyword required exactly 1 parameter - a list container value");
             }
 
-            ScopeElement element = new ScopeElement(input[0] as IdentifierType, input[1], true);
+            ScopeElement element = new ScopeElement(new IdentifierType(CatchFunctionName), input[0], true);
 
             if (Evaluator.HasLocalScope())
             {

@@ -1,17 +1,14 @@
-
-- Add guard to check identifiers exist in scope else exception
 - Fix tokenising to correctly build fragments
 - Add into operator => for functions, strings, fragments - functions done
+    - Interpolation works correctly for different types, key for it as part of interface
 
-- > < >= <= ? operators
+- ? operator
 - Add keywords: for, concatenate, reverse, etc
 - Add web server functionality
 - Add open text file functionality
 - Add test statements
-- Add catch (1 catch per scope, registered as a special type of function)
 - Ensure only interpreter is public rest is internal
 - Promote keyword
-- Interpolation works correctly for different types, key for it as part of interface
 - DateTime type
 - IS for function?
 
@@ -22,6 +19,9 @@ DONE
 - Fix symbol operations to use those casts (int is done, string is done)
 - Add useful symbol operations e.g. + string = concat string done for + Special operators moved to be in the types class  
 - Add concept of local scope to functions
+- Add guard to check identifiers exist in scope else exception
+- Add catch (1 catch per scope, registered as a special type of function)
+- > < >= <= operators
 
 -----
 

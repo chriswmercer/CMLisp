@@ -1,5 +1,4 @@
-﻿using System;
-namespace CMLisp.Core
+﻿namespace CMLisp.Core
 {
     internal class Token
     {
@@ -7,7 +6,7 @@ namespace CMLisp.Core
 
         public Token(string token)
         {
-            Value = token.ToLower();
+            Value = token;
         }
     }
 }

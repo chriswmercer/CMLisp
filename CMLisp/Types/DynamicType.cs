@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace CMLisp.Types
+﻿namespace CMLisp.Types
 {
     public class DynamicType<T> : BaseType where T: new()
     {
