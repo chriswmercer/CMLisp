@@ -1,0 +1,18 @@
+﻿; run "Examples/example11.txt"
+(
+    (func main is
+        (do
+            (guard parameter1)
+            (nth 1
+                    (do  (conc parameter1 "llama")
+                         (? parameter1)
+                         (parameter2 * 2)
+                    )
+            )
+            (first [1, 2, 3, 4, 5]))
+    )
+
+    (var input is { parameter1 : "cheese", parameter2 : "potato" })
+
+    (input => main)
+) 

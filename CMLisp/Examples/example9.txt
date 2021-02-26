@@ -1,0 +1,10 @@
+﻿; run "Examples/example9.txt"
+(
+    (func main is
+        (conc parameter1 "llama")
+    )
+
+    (var input is { parameter1 : "cheese", parameter2 : "potato" })
+
+    (input => main)
+) 

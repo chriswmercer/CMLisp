@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CMLisp.Keywords;
+using CMLisp.Operations;
 using CMLisp.Types;
 
 namespace CMLisp.Language
@@ -18,7 +19,12 @@ namespace CMLisp.Language
             { "=>", (x) => InterpolationKeyword.Evaluate(x) },
             { "interpolate", (x) => InterpolationKeyword.Evaluate(x) },
             { "guard", (x) => new GuardKeyword().Evaluate(x) },
-            { "catch", (x) => new CatchKeyword().Evaluate(x) }
+            { "catch", (x) => new CatchKeyword().Evaluate(x) },
+            { "concatinate", (x) => new ConcatinateKeyword().Evaluate(x) },
+            { "do", (x) => new DoKeyword().Evaluate(x) },
+            { "nth", (x) => new NthKeyword().Evaluate(x) },
+            { "first", (x) => new FirstKeyword().Evaluate(x) },
+            { "?", (x) => Existence.Exists(x) }
         };
 
         public static Func<BaseType[], BaseType> FunctionFor(string functionName)

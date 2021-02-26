@@ -9,7 +9,7 @@ namespace CMLisp.Keywords
     {
         public BaseType Evaluate(BaseType[] input)
         {
-            if(input.Length != 3 || input[0].Type != LanguageTypes.Identifier)
+            if(input.Length != 3 || input[0].Type != LanguageTypes.Identifier || input[1].Value.ToString().ToLower() != "is")
             {
                 throw new LanguageException("The variable keyword required exactly 3 parameters - an identifier, \"is\" and any base value");
             }

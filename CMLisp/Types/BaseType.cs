@@ -10,6 +10,11 @@ namespace CMLisp.Types
         private static readonly BaseType nil = new NilType();
         public static BaseType Empty => nil;
 
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(this, obj))
@@ -43,6 +48,21 @@ namespace CMLisp.Types
                 case LanguageTypes.Object: return new ObjectType(value);
                 case LanguageTypes.String: return new StringType(value);
                 default: throw new Exception("Could not determine type");
+            }
+        }
+
+        internal static bool IsDataType(BaseType type)
+        {
+            switch(type.Type)
+            {
+                case LanguageTypes.Array:
+                case LanguageTypes.Boolean:
+                case LanguageTypes.Decimal:
+                case LanguageTypes.Fragment:
+                case LanguageTypes.Integer:
+                case LanguageTypes.Object:
+                case LanguageTypes.String: return true;
+                default: return false;
             }
         }
     }

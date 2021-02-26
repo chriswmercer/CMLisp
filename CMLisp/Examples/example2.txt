@@ -1,7 +1,7 @@
 ﻿(
     (variable a is 6)
 
-    (function main
+    (function main is 
         (+ a 3)
     )
 

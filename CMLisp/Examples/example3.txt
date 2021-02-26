@@ -1,11 +1,11 @@
 ﻿(
     (variable a is 6)
 
-    (function add3
+    (function add3 is 
         (a + 3)
     )
 
-    (function main
+    (function main is 
         (add3)
     )
 

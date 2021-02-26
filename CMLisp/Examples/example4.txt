@@ -2,11 +2,11 @@
 (
     (var a is 6)
 
-    (fun add3
+    (fun add3 is 
         (a + 3)
     )
 
-    (func main
+    (func main is 
         (add3)
     )
 

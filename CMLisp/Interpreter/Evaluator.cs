@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using CMLisp.Exceptions;
 using CMLisp.Keywords;
@@ -124,8 +124,7 @@ namespace CMLisp.Core
             }
             else if(input.Type == LanguageTypes.Identifier)
             {
-                ScopeElement item = LocalScope?.Get(input.Value.ToString()) ?? GlobalScope.Get(input.Value.ToString());
-
+                ScopeElement item = CheckScope(input.Value.ToString());
                 if (item == null) throw new LanguageException($"The identifier { input.Value } was not found.");
 
                 return item.Value;
@@ -134,6 +133,11 @@ namespace CMLisp.Core
             {
                 return input;
             }
+        }
+
+        internal static ScopeElement CheckScope(string input)
+        {
+            return LocalScope?.Get(input) ?? GlobalScope.Get(input);
         }
 
         private static BaseType SplitForOperation(ListContainer list, out BaseType[] operands)

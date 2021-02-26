@@ -2,16 +2,28 @@
 - Add into operator => for functions, strings, fragments - functions done
     - Interpolation works correctly for different types, key for it as part of interface
 
-- ? operator
 - Add keywords: for, concatenate, reverse, etc
+    (done) concatinate
+    reverse
+    (done) first
+    rest
+    (done) nth
+    apply
+    (done) do (do the actions and return as an array)
+    split
+    join
+    foreach (same as apply?)
+    lambda
+    trim (remove all nils from array)
+    
+
 - Add web server functionality
 - Add open text file functionality
 - Add test statements
 - Ensure only interpreter is public rest is internal
 - Promote keyword
 - DateTime type
-- IS for function?
-
+- add to string for complex types (array done)
 
 DONE
 - keyword lookup add being able to find based on fewest letters e.g. con = concatenate
@@ -22,6 +34,8 @@ DONE
 - Add guard to check identifiers exist in scope else exception
 - Add catch (1 catch per scope, registered as a special type of function)
 - > < >= <= operators
+- ? operator
+- IS for function?
 
 -----
 

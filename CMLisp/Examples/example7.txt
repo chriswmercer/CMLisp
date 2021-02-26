@@ -2,14 +2,14 @@
 (
     (var a is 6)
 
-    (fun add3
+    (fun add3 is
         (
             (guard a)
             (a + 3)
         )
     )
 
-    (func main
+    (func main is
         (
             (guard parameter1)
             (if (true = true)
