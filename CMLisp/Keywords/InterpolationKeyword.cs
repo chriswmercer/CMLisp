@@ -31,6 +31,16 @@ namespace CMLisp.Keywords
                     return returnValue;
                 }
 
+                if(source.Type == LanguageTypes.Object && destination.Type == LanguageTypes.Fragment)
+                {
+                    foreach(var key in (source as ObjectType).Keys)
+                    {
+                        destination.Value = ((string)destination.Value).Replace($"%{key}%", (source as ObjectType)[key].Value.ToString());
+                    }
+
+                    return destination;
+                }
+
                 return Evaluator.Evaluate(new NilType(), Evaluator.LocalScope);
                 
             }

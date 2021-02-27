@@ -54,7 +54,21 @@ namespace CMLisp.Core
             {
                 var form = ReadForm(reader);
 
-                if(form.Type == LanguageTypes.String && form.Value == ClosingCharacterFor(type))
+                //check for fragments
+                string tokenString = form.Value.ToString();
+
+                if(tokenString.StartsWith("<") && tokenString.EndsWith(">"))
+                {
+                    var newForm = BuildFragment(reader, form, tokenString);
+
+                    if(newForm != null)
+                    {
+                        tokens.Add(newForm);
+                        continue;
+                    }
+                }
+
+                if (form.Type == LanguageTypes.String && form.Value == ClosingCharacterFor(type))
                 {
                     return GenerateFor(type, tokens);
                 }
@@ -167,6 +181,32 @@ namespace CMLisp.Core
             return builtTokens;
         }
 
+        private static FragmentType BuildFragment(Reader reader, BaseType form, string tokenString)
+        {
+            string tag = tokenString.Replace("<", "").Replace(">", "");
+            int nestCount = 0;
+
+            while (!reader.EndOfFile)
+            {
+                var htmlForm = ReadForm(reader);
+                string htmlString = htmlForm.Value.ToString();
+
+                if (htmlString == $"<{tag}>") nestCount++;
+                if (htmlString == $"</{tag}>") nestCount--;
+
+                tokenString += $"{htmlString} ";
+
+                if (nestCount == -1)
+                {
+                    tokenString = tokenString.Replace("> <", "><").Replace("> ", ">");
+                    form = new FragmentType(tokenString);
+                    break;
+                }
+            }
+
+            return form as FragmentType;
+        }
+
         private static string OpeningCharacterFor(LanguageTypes type)
         {
             switch(type)
@@ -196,7 +236,16 @@ namespace CMLisp.Core
                 case LanguageTypes.List: return new ListContainer(tokens);
                 case LanguageTypes.Array: return new ArrayType(tokens);
                 case LanguageTypes.Object: return new ObjectType(ArrayGenerator(tokens));
-                default: throw new ArgumentException($"{type} is not a valid list/vector/hashmap type");
+                default: throw new ArgumentException($"{type} is not a valid list/array/object type");
+            }
+        }
+
+        private static BaseType GenerateFor(LanguageTypes type, string tokenString)
+        {
+            switch(type)
+            {
+                case LanguageTypes.Fragment: return new FragmentType(tokenString);
+                default: throw new ArgumentException($"{type} is not a valid type");
             }
         }
 

@@ -1,0 +1,27 @@
+﻿; run "Examples/example12.txt"
+(
+    (print 
+        (
+            <div>
+                <h1>This is a test</h1>
+            </div>
+
+            *
+
+            2
+        )
+    )
+    (print
+        (
+            { var1 : "chris", var2 : "mercer" }
+
+            =>
+
+            <div>
+                <h1>Hello, %var1%</h1>
+                <h2>Full name: %var1% %var2%</h2>
+            </div>
+        )
+    )
+    (print (rest [1, 2, 3, 4, 5]))
+) 

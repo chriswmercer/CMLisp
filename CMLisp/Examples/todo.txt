@@ -1,5 +1,4 @@
-- Fix tokenising to correctly build fragments
-- Add into operator => for functions, strings, fragments - functions done
+- Add into operator => for functions, strings, fragments - functions done, fragments done
     - Interpolation works correctly for different types, key for it as part of interface
 
 - Add keywords: for, concatenate, reverse, etc
@@ -36,6 +35,7 @@ DONE
 - > < >= <= operators
 - ? operator
 - IS for function?
+- Fix tokenising to correctly build fragments
 
 -----
 

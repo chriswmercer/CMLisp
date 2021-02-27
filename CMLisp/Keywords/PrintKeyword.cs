@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CMLisp.Core;
 using CMLisp.Types;
+using CMLisp.Language;
 
 namespace CMLisp.Keywords
 {
@@ -9,11 +10,24 @@ namespace CMLisp.Keywords
     {
         public BaseType Evaluate(BaseType[] input, bool newline = false)
         {
-            foreach(var item in input)
+            foreach (var item in input)
             {
                 var evaluated = Evaluator.Evaluate(item, Evaluator.LocalScope);
+                var value = evaluated.Value;
 
-                string result = evaluated.Value.ToString().Replace("\\n", "\n");
+                string result = string.Empty;
+
+                if (evaluated.Type == LanguageTypes.Array)
+                {
+                    value = (List<BaseType>)value;
+                    result = Extensions.ToString(value);
+                }
+                else
+                {
+                    result = value.ToString();
+                }
+
+                result = result.Replace("\\n", "\n");
 
                 if (result == "Nil") result = "";
 

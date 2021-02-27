@@ -21,7 +21,7 @@ namespace CMLisp.Core
 
         private static BaseType EvaluateAST(BaseType input)
         {
-            if (input.Type == LanguageTypes.List)
+            if (input?.Type == LanguageTypes.List)
             {
                 var list = input as ListContainer;
 
@@ -122,7 +122,7 @@ namespace CMLisp.Core
                     }
                 }
             }
-            else if(input.Type == LanguageTypes.Identifier)
+            else if(input?.Type == LanguageTypes.Identifier)
             {
                 ScopeElement item = CheckScope(input.Value.ToString());
                 if (item == null) throw new LanguageException($"The identifier { input.Value } was not found.");
@@ -131,7 +131,7 @@ namespace CMLisp.Core
             }
             else
             {
-                return input;
+                return input ?? new NilType();
             }
         }
 
