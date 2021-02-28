@@ -137,7 +137,53 @@ namespace CMLisp.Core
 
         internal static ScopeElement CheckScope(string input)
         {
-            return LocalScope?.Get(input) ?? GlobalScope.Get(input);
+            if (input.Contains("."))
+            {
+                string[] elements = input.Split('.');
+                string itemName = elements[0];
+                if (itemName == null || itemName.Trim() == "") return null;
+
+                var element = CheckScope(elements[0]);
+                if (element == null || (element.Value.Type != LanguageTypes.Object && element.Value.Type != LanguageTypes.Array)) return null;
+
+                if (element.Value.Type == LanguageTypes.Array)
+                {
+                    if (int.TryParse(elements[1], out int index))
+                    {
+                        var variableValue = (element.Value as ArrayType)?.Value ?? throw new Exception($"Internal Error: Trying to get scope element { input } resulted in a non-array cast");
+                        if (index >= variableValue.Count)
+                        {
+                            throw new LanguageException($"The index request { input } was invalid as the variable { itemName } has a count of { variableValue.Count}. Remember arrays are 0-indexed.");
+                        }
+                        else
+                        {
+                            return new ScopeElement(new IdentifierType(input), variableValue[index]);
+                        }
+                    }
+                    else return null;
+                }
+                else if (element.Value.Type == LanguageTypes.Object)
+                {
+                    var elementAsObject = (element.Value as ObjectType) ?? throw new Exception($"Internal Error: Trying to get scope element { input } resulted in a non-object cast"); ;
+                    string index = elements[1];
+                    if(elementAsObject.Keys.Contains(index))
+                    {
+                        return new ScopeElement(new IdentifierType(input), elementAsObject[index]);
+                    }
+                    else
+                    {
+                        throw new LanguageException($"The index request { input } was invalid as the variable { itemName } has no property {index}.");
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return LocalScope?.Get(input) ?? GlobalScope.Get(input);
+            }
         }
 
         private static BaseType SplitForOperation(ListContainer list, out BaseType[] operands)
