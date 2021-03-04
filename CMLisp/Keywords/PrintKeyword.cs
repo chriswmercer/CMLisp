@@ -12,7 +12,13 @@ namespace CMLisp.Keywords
         {
             foreach (var item in input)
             {
-                var evaluated = Evaluator.Evaluate(item, Evaluator.LocalScope);
+                BaseType evaluated = Evaluator.Evaluate(item, Evaluator.LocalScope);
+
+                while (evaluated.Type == LanguageTypes.List || evaluated.Type == LanguageTypes.Identifier)
+                {
+                    evaluated = Evaluator.Evaluate(evaluated, Evaluator.LocalScope);
+                }
+
                 var value = evaluated.Value;
 
                 string result = string.Empty;

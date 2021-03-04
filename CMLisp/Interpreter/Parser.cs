@@ -255,7 +255,7 @@ namespace CMLisp.Core
 
             if (tokens.Count % 3 != 0) throw new ArgumentException("The hashmap was invalid. Format example: { identifier : <basetype> , identifier2 : <basetype> }");
 
-            tokens.RemoveAll(x => x.Value == ":");
+            tokens.RemoveAll(x => x.Type == LanguageTypes.String && x.Value == ":");
 
             using (var iterator = tokens.GetEnumerator())
             {

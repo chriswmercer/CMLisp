@@ -30,4 +30,17 @@
 
     (variable anArray is [1, 2, 3, 4, 5])
     (printline anArray.0)
+
+    (function recurs is
+        (if (? x)
+            (do (variable f is (first x))
+                (print f)
+                (variable rx is (rest x))
+                (print rx)
+                ({ x : rx } => recurs))
+            (print "Please pass in a parameter")
+        )
+    )
+
+    ({ x : [898, 2, 3, 4, 5] } => recurs)
 ) 
