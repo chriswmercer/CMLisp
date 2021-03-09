@@ -19,7 +19,14 @@ namespace CMLisp.Keywords
 
             foreach(var item in input)
             {
-                returnValue.Value.Add(Evaluator.Evaluate(item, Evaluator.LocalScope));
+                var evaluatedItem = Evaluator.Evaluate(item, Evaluator.LocalScope);
+
+                while(evaluatedItem.Type == LanguageTypes.Identifier || evaluatedItem.Type == LanguageTypes.List)
+                {
+                    evaluatedItem = Evaluator.Evaluate(evaluatedItem, Evaluator.LocalScope);
+                }
+
+                returnValue.Value.Add(evaluatedItem);
             }
 
             return returnValue;

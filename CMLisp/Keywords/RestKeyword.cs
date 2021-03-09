@@ -11,15 +11,25 @@ namespace CMLisp.Keywords
     {
         public BaseType Evaluate(BaseType[] input)
         {
-            if (input.Length == 1 && input[0].Type == LanguageTypes.Array)   
+            if(input.Length == 1)
             {
-                var val = (input[0] as ArrayType).Value;
-                val.RemoveAt(0);
-                return new ArrayType(val);
-            }
-            else if(input.Length == 1)
-            {
-                return new NilType();
+                var operand = input[0];
+
+                while(operand?.Type == LanguageTypes.Identifier || operand?.Type == LanguageTypes.List)
+                {
+                    operand = Evaluator.Evaluate(operand, Evaluator.LocalScope);
+                }
+
+                if (operand.Type == LanguageTypes.Array)
+                {
+                    var val = (operand as ArrayType).Value;
+                    val.RemoveAt(0);
+                    return new ArrayType(val);
+                }
+                else
+                {
+                    return new NilType();
+                }
             }
             else
             {

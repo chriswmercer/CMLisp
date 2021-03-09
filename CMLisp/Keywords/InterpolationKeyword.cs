@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CMLisp.Core;
 using CMLisp.Exceptions;
 using CMLisp.Language;
@@ -26,6 +27,22 @@ namespace CMLisp.Keywords
 
                 if(source.Type == LanguageTypes.Object && destination.Type == LanguageTypes.Identifier)
                 {
+                    List<BaseType> values = (List<BaseType>)source.Value;
+
+                    for (int i = 0; i < values.Count; i++)
+                    {
+                        var value = values[i] as KeyValuePairType;
+                        var outerValue = (KeyValuePair<IdentifierType, BaseType>)value.Value;
+                        var innerValue = outerValue.Value ?? new NilType();
+
+                        while(innerValue?.Type == LanguageTypes.Identifier || innerValue?.Type == LanguageTypes.List)
+                        {
+                            innerValue = Evaluator.Evaluate(innerValue, Evaluator.LocalScope);
+                        }
+
+                        values[i].Value = BaseType.GeneratorFor(innerValue.Type, innerValue.Value);
+                    }
+
                     Scope localScope = BuildLocalScope(source as ObjectType);
                     BaseType returnValue = Evaluator.Evaluate(destination, localScope);
                     return returnValue;
@@ -43,6 +60,10 @@ namespace CMLisp.Keywords
 
                 return Evaluator.Evaluate(new NilType(), Evaluator.LocalScope);
                 
+            }
+            catch (LanguageException)
+            {
+                throw;
             }
             catch (Exception exc)
             {

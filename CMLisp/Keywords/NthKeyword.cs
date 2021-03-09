@@ -16,8 +16,15 @@ namespace CMLisp.Keywords
                 throw new LanguageException("Nth must be used with 1 integer and one array type");
             }
 
-            if (input[0].Type == LanguageTypes.Identifier) input[0] = Evaluator.Evaluate(input[0], Evaluator.LocalScope);
-            if (input[1].Type == LanguageTypes.Identifier) input[1] = Evaluator.Evaluate(input[1], Evaluator.LocalScope);
+            while (input[0].Type == LanguageTypes.Identifier)
+            {
+                input[0] = Evaluator.Evaluate(input[0], Evaluator.LocalScope);
+            }
+
+            while (input[1].Type == LanguageTypes.Identifier)
+            {
+                input[1] = Evaluator.Evaluate(input[1], Evaluator.LocalScope);
+            }
 
             if(input[0].Type != LanguageTypes.Integer)
             {

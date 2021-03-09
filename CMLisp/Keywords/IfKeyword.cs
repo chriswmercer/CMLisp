@@ -1,4 +1,5 @@
-﻿using CMLisp.Core;
+﻿using System;
+using CMLisp.Core;
 using CMLisp.Exceptions;
 using CMLisp.Language;
 using CMLisp.Types;
@@ -42,9 +43,9 @@ namespace CMLisp.Keywords
 
                 return new NilType();
             }
-            catch
+            catch(Exception exc)
             {
-                throw new LanguageException("The 'if' keyword requires a list to evalue a condition, a list to evaluate if true and an optional list to evaluate if false");
+                throw new LanguageException("The 'if' keyword requires a list to evalue a condition, a list to evaluate if true and an optional list to evaluate if false", exc);
             }
         }
     }

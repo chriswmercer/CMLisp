@@ -37,6 +37,7 @@
                 (print f)
                 (variable rx is (rest x))
                 (print rx)
+                (message "calling recurs")
                 ({ x : rx } => recurs))
             (print "Please pass in a parameter")
         )
