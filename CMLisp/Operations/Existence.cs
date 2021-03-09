@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CMLisp.Core;
 using CMLisp.Exceptions;
 using CMLisp.Language;
@@ -16,6 +17,12 @@ namespace CMLisp.Operations
             }
 
             ScopeElement item = Evaluator.CheckScope(items[0].Value.ToString());
+
+            //if it equates to an array but that array has no values, it does not exist as a valid array
+            if (item?.Value.Type == LanguageTypes.Array && (item.Value.Value as List<BaseType>).Count < 1)
+            {
+                return new BooleanType(false);
+            }
 
             return new BooleanType(item != null);
         }

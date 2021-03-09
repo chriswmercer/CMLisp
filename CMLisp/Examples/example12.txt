@@ -34,12 +34,12 @@
     (function recurs is
         (if (? x)
             (do (variable f is (first x))
-                (print f)
+                (printline f)
                 (variable rx is (rest x))
-                (print rx)
+                (printline rx)
                 (message "calling recurs")
                 ({ x : rx } => recurs))
-            (print "Please pass in a parameter")
+            (printline "Complete")
         )
     )
 

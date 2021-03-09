@@ -23,7 +23,12 @@ namespace CMLisp.Keywords
                 if (operand.Type == LanguageTypes.Array)
                 {
                     var val = (operand as ArrayType).Value;
+
+                    if (val.Count < 1) return new NilType();
+
                     val.RemoveAt(0);
+
+                    if (val.Count < 1) return new NilType();
                     return new ArrayType(val);
                 }
                 else

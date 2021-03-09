@@ -50,6 +50,11 @@ namespace CMLisp.Keywords
                 throw new LanguageException($"Index of { number } was out of range.");
             }
 
+            if (data.Count < 1)
+            {
+                return new NilType();
+            }
+
             return data[number];
         }
     }

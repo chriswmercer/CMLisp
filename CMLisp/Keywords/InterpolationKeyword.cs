@@ -40,7 +40,7 @@ namespace CMLisp.Keywords
                             innerValue = Evaluator.Evaluate(innerValue, Evaluator.LocalScope);
                         }
 
-                        values[i].Value = BaseType.GeneratorFor(innerValue.Type, innerValue.Value);
+                        values[i] = BaseType.GeneratorFor(LanguageTypes.KeyValuePair, new KeyValuePair<IdentifierType, BaseType>(outerValue.Key, innerValue));
                     }
 
                     Scope localScope = BuildLocalScope(source as ObjectType);

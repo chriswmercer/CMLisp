@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CMLisp.Language;
 using CMLisp.Types;
 
@@ -40,7 +41,36 @@ namespace CMLisp.Core
         private static string Evaluate(BaseType input)
         {
             Evaluator.GlobalScope = new Scope();
-            return Evaluator.Evaluate(input, null).ToString();
+            var result = Evaluator.Evaluate(input, null);
+            return EvaluationParser(result);
+        }
+
+        private static string EvaluationParser(BaseType input)
+        {
+            var returnString = string.Empty;
+
+            switch (input.Type)
+            {
+                case LanguageTypes.Array: returnString += EvaluationArray(input as ArrayType); break;
+                case LanguageTypes.Nil: break;
+                default: returnString += input.Value.ToString(); break;
+            }
+
+            return returnString;
+        }
+
+        private static string EvaluationArray(ArrayType input)
+        {
+            var returnString = "[";
+
+            foreach(var item in input.Value)
+            {
+                returnString += EvaluationParser(item) + ",";
+            }
+
+            returnString = returnString.Substring(0, returnString.Length - 1) + "]";
+
+            return returnString;
         }
     }
 }
