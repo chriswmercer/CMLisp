@@ -6,7 +6,7 @@ using CMLisp.Types;
 
 namespace CMLisp.Core
 {
-    internal static class Parser
+    internal static class InputParser
     {
         private const string tokenPattern = "[\\s,]*(~@|[\\[\\]{}()'`~^@]|\"(?:\\.|[^\\\"])*\" ?|;.*|[^\\s\\[\\]{}'\"`,;)]*)";
 

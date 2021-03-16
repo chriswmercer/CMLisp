@@ -1,4 +1,4 @@
-﻿; example with keyword short forms
+﻿; run "Examples/example4.txt"
 (
     (var a is 6)
 

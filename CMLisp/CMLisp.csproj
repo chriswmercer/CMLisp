@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <Folder Include="REPL\" />
-    <Folder Include="Interpreter\" />
+    <Folder Include="Core\" />
     <Folder Include="Types\" />
     <Folder Include="Language\" />
     <Folder Include="Examples\" />

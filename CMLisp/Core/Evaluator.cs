@@ -9,6 +9,7 @@ namespace CMLisp.Core
 {
     public static class Evaluator
     {
+        public static Stack FunctionStack = new Stack("init");
         public static Scope GlobalScope = new Scope();
         public static Scope LocalScope = null;
 
@@ -23,104 +24,7 @@ namespace CMLisp.Core
         {
             if (input?.Type == LanguageTypes.List)
             {
-                var list = input as ListContainer;
-
-                //remove nils
-                list.Value = list.Value.Where(x => x.Type != LanguageTypes.Nil).ToList();
-
-                if (list.Value.Count == 1 && list.Value[0].Type == LanguageTypes.List)
-                {
-                    list = list.Value[0] as ListContainer;
-                    return EvaluateAST(list);
-                }
-
-                BaseType functor = SplitForOperation(list, out BaseType[] operands);
-
-                if (functor.Type == LanguageTypes.Keyword)
-                {
-                    try
-                    {
-                        var func = Language.Keywords.FunctionFor(functor.Value);
-                        return func(operands);
-                    }
-                    catch (LanguageException exc)
-                    {
-                        return CheckCatch(exc);
-                    }
-                }
-                else
-                {
-                    //evaluate out list
-                    for (int i = 0; i < list.Value.Count; i++)
-                    {
-                        var item = list.Value[i];
-
-                        if (item.Type == LanguageTypes.Identifier)
-                        {
-                            list.Value[i] = EvaluateAST(item);
-                        }
-                        else if (item.Type == LanguageTypes.List)
-                        {
-                            while (list.Value[i].Type == LanguageTypes.List)
-                            {
-                                //list.Value[i] = EvaluateAST(item);
-                                list.Value[i] = EvaluateAST(list.Value[i]);
-                            }
-                        }
-                    }
-
-                    //need to remove nils - these are likely functions/identifiers
-                    list.Value = list.Value.Where(item => item.Type != LanguageTypes.Nil).ToList();
-
-                    //need to refresh operands as they may have been evaluated out
-                    functor = SplitForOperation(list, out operands);
-
-                    //evaluate out operands
-                    if (operands != null)
-                    {
-                        for (int i = 0; i < operands.Length; i++)
-                        {
-                            var item = operands[i];
-
-                            if (item.Type == LanguageTypes.Identifier)
-                            {
-                                operands[i] = EvaluateAST(item);
-                            }
-                            else if (operands[i].Type == LanguageTypes.List)
-                            {
-                                while (operands[i].Type == LanguageTypes.List)
-                                {
-                                    operands[i] = EvaluateAST(operands[i]);
-                                }
-                            }
-                        }
-                    }
-
-                    if (functor.Type == LanguageTypes.List)
-                    {
-                        var newList = (functor as ListContainer).Value.FirstOrDefault();
-                        return EvaluateAST(newList);
-                    }
-
-                    Func<BaseType[], BaseType> func = Symbols.FunctionFor(functor.Value);
-
-                    try
-                    {
-                        try
-                        {
-                            var value = func(operands);
-                            return value;
-                        }
-                        catch (LanguageException exc)
-                        {
-                            return CheckCatch(exc);
-                        }
-                    }
-                    catch (Exception exc)
-                    {
-                        throw new EvaluationException($"It was not possible to apply the symbol { functor.Value.ToString() } to one or more operands in this expression.", exc);
-                    }
-                }
+                return EvaluateList(input as ListContainer);
             }
             else if(input?.Type == LanguageTypes.Identifier)
             {
@@ -132,6 +36,133 @@ namespace CMLisp.Core
             else
             {
                 return input ?? new NilType();
+            }
+        }
+
+        private static BaseType EvaluateList(ListContainer list)
+        {
+            var inFunction = false;
+
+            RemoveNils(ref list);
+
+            if (list.Value.Count == 1 && list.Value[0].Type == LanguageTypes.List)
+            {
+                list = list.Value[0] as ListContainer;
+                return EvaluateAST(list);
+            }
+
+            BaseType functor = SplitForOperation(list, out BaseType[] operands);
+
+            if (functor.Type == LanguageTypes.Keyword)
+            {
+                try
+                {
+                    var func = Language.Keywords.FunctionFor(functor.Value);
+                    return func(operands);
+                }
+                catch (LanguageException exc)
+                {
+                    return CheckCatch(exc);
+                }
+            }
+            else
+            {
+                if(functor.Type == LanguageTypes.Identifier)
+                {
+                    inFunction = true;
+                    FunctionStack.Push(functor.Value);
+                }
+
+                Explode(ref list);
+                RemoveNils(ref list);
+
+                //need to refresh operands as they may have been evaluated out
+                functor = SplitForOperation(list, out operands);
+
+                //evaluate out operands
+                if (operands != null)
+                {
+                    Explode(ref operands);
+                }
+
+                if (functor.Type == LanguageTypes.List)
+                {
+                    var newList = (functor as ListContainer).Value.FirstOrDefault();
+                    var value = EvaluateAST(newList);
+
+                    if (inFunction) FunctionStack.Pop();
+                    return value;
+                }
+
+                Func<BaseType[], BaseType> func = Symbols.FunctionFor(functor.Value);
+
+                try
+                {
+                    try
+                    {
+                        var value = func(operands);
+
+                        if (inFunction) FunctionStack.Pop();
+                        return value;
+                    }
+                    catch (LanguageException exc)
+                    {
+                        var value = CheckCatch(exc);
+
+                        if (inFunction) FunctionStack.Pop();
+                        return value;
+                    }
+                }
+                catch (Exception exc)
+                {
+                    throw new EvaluationException($"It was not possible to apply the symbol { functor.Value.ToString() } to one or more operands in this expression.", exc);
+                }
+            }
+        }
+
+        private static void RemoveNils(ref ListContainer list)
+        {
+            list.Value = list.Value.Where(item => item.Type != LanguageTypes.Nil).ToList();
+        }
+
+        private static void Explode(ref ListContainer list)
+        {
+            for (int i = 0; i < list.Value.Count; i++)
+            {
+                var item = list.Value[i];
+
+                if (item.Type == LanguageTypes.Identifier)
+                {
+                    list.Value[i] = EvaluateAST(item);
+                }
+                else if (item.Type == LanguageTypes.List)
+                {
+                    while (list.Value[i].Type == LanguageTypes.List)
+                    {
+                        //list.Value[i] = EvaluateAST(item);
+                        list.Value[i] = EvaluateAST(list.Value[i]);
+                    }
+                }
+            }
+        }
+
+        private static void Explode(ref BaseType[] operands)
+        {
+            for (int i = 0; i < operands.Length; i++)
+            {
+                var item = operands[i];
+
+                if (item.Type == LanguageTypes.Identifier)
+                {
+                    operands[i] = EvaluateAST(item);
+                }
+                else if (operands[i].Type == LanguageTypes.List)
+                {
+                    while (operands[i].Type == LanguageTypes.List)
+                    {
+                        operands[i] = EvaluateAST(operands[i]);
+                    }
+                }
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using CMLisp.Core;
 using CMLisp.Exceptions;
 using CMLisp.Types;
@@ -17,6 +16,8 @@ namespace CMLisp.Keywords
 
             ArrayType returnValue = new ArrayType(new System.Collections.Generic.List<BaseType>());
 
+            Evaluator.FunctionStack.Push("Do");
+
             foreach(var item in input)
             {
                 var evaluatedItem = Evaluator.Evaluate(item, Evaluator.LocalScope);
@@ -29,6 +30,7 @@ namespace CMLisp.Keywords
                 returnValue.Value.Add(evaluatedItem);
             }
 
+            Evaluator.FunctionStack.Pop();
             return returnValue;
         }
     }
