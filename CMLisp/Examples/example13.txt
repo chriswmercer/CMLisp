@@ -48,7 +48,14 @@
         (2 + 3))
 
     ({ x : [898, 2, 3, 4, 5] } => recurs)
+    (print basic)
 
-    (test recurs with { x : [898, 2, 3, 4, 5] } expect ["calling recurs", "cheese"])
+    (variable testparams is { x : [898, 2, 3, 4, 5], y : [1, 2, 3, 4] })
+
+    (test recurs with testparams expect ["calling recurs", "cheese", 1])
     (test basic with {} expect 5)
+
+    (print (json { x : [898, 2, 3, 4, 5] }))
+    (variable jsontest is { x : [898, 2, 3, 4, 5] })
+    (print (json jsontest))
 ) 
