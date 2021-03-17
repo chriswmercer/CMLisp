@@ -13,18 +13,18 @@ namespace CMLisp.Core
         public static Scope GlobalScope = new Scope();
         public static Scope LocalScope = null;
 
-        public static BaseType Evaluate(BaseType input, Scope localScope)
+        public static BaseType Evaluate(BaseType input, Scope localScope, bool ignoreTestStatements = false)
         {
             LocalScope = localScope;
-            var returnValue = EvaluateAST(input);
+            var returnValue = EvaluateAST(input, ignoreTestStatements);
             return returnValue;
         }
 
-        private static BaseType EvaluateAST(BaseType input)
+        private static BaseType EvaluateAST(BaseType input, bool ignoreTestStatements)
         {
             if (input?.Type == LanguageTypes.List)
             {
-                return EvaluateList(input as ListContainer);
+                return EvaluateList(input as ListContainer, ignoreTestStatements);
             }
             else if(input?.Type == LanguageTypes.Identifier)
             {
@@ -39,7 +39,7 @@ namespace CMLisp.Core
             }
         }
 
-        private static BaseType EvaluateList(ListContainer list)
+        private static BaseType EvaluateList(ListContainer list, bool ignoreTestStatements)
         {
             var inFunction = false;
 
@@ -48,7 +48,7 @@ namespace CMLisp.Core
             if (list.Value.Count == 1 && list.Value[0].Type == LanguageTypes.List)
             {
                 list = list.Value[0] as ListContainer;
-                return EvaluateAST(list);
+                return EvaluateAST(list, ignoreTestStatements);
             }
 
             BaseType functor = SplitForOperation(list, out BaseType[] operands);
@@ -57,6 +57,11 @@ namespace CMLisp.Core
             {
                 try
                 {
+                    if(ignoreTestStatements && functor.Value.ToString().ToLower() == "test")
+                    {
+                        return new NilType();
+                    }
+
                     var func = Language.Keywords.FunctionFor(functor.Value);
                     return func(operands);
                 }
@@ -73,7 +78,7 @@ namespace CMLisp.Core
                     FunctionStack.Push(functor.Value);
                 }
 
-                Explode(ref list);
+                Explode(ref list, ignoreTestStatements);
                 RemoveNils(ref list);
 
                 //need to refresh operands as they may have been evaluated out
@@ -82,13 +87,13 @@ namespace CMLisp.Core
                 //evaluate out operands
                 if (operands != null)
                 {
-                    Explode(ref operands);
+                    Explode(ref operands, ignoreTestStatements);
                 }
 
                 if (functor.Type == LanguageTypes.List)
                 {
                     var newList = (functor as ListContainer).Value.FirstOrDefault();
-                    var value = EvaluateAST(newList);
+                    var value = EvaluateAST(newList, ignoreTestStatements);
 
                     if (inFunction) FunctionStack.Pop();
                     return value;
@@ -125,7 +130,7 @@ namespace CMLisp.Core
             list.Value = list.Value.Where(item => item.Type != LanguageTypes.Nil).ToList();
         }
 
-        private static void Explode(ref ListContainer list)
+        private static void Explode(ref ListContainer list, bool ignoreTestStatements)
         {
             for (int i = 0; i < list.Value.Count; i++)
             {
@@ -133,20 +138,20 @@ namespace CMLisp.Core
 
                 if (item.Type == LanguageTypes.Identifier)
                 {
-                    list.Value[i] = EvaluateAST(item);
+                    list.Value[i] = EvaluateAST(item, ignoreTestStatements);
                 }
                 else if (item.Type == LanguageTypes.List)
                 {
                     while (list.Value[i].Type == LanguageTypes.List)
                     {
                         //list.Value[i] = EvaluateAST(item);
-                        list.Value[i] = EvaluateAST(list.Value[i]);
+                        list.Value[i] = EvaluateAST(list.Value[i], ignoreTestStatements);
                     }
                 }
             }
         }
 
-        private static void Explode(ref BaseType[] operands)
+        private static void Explode(ref BaseType[] operands, bool ignoreTestStatements)
         {
             for (int i = 0; i < operands.Length; i++)
             {
@@ -154,13 +159,13 @@ namespace CMLisp.Core
 
                 if (item.Type == LanguageTypes.Identifier)
                 {
-                    operands[i] = EvaluateAST(item);
+                    operands[i] = EvaluateAST(item, ignoreTestStatements);
                 }
                 else if (operands[i].Type == LanguageTypes.List)
                 {
                     while (operands[i].Type == LanguageTypes.List)
                     {
-                        operands[i] = EvaluateAST(operands[i]);
+                        operands[i] = EvaluateAST(operands[i], ignoreTestStatements);
                     }
                 }
             }

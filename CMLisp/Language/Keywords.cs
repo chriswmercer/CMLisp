@@ -26,7 +26,9 @@ namespace CMLisp.Language
             { "first", (x) => new FirstKeyword().Evaluate(x) },
             { "?", (x) => Existence.Exists(x) },
             { "rest", (x) => new RestKeyword().Evaluate(x) },
-            { "message", (x) => new MessageKeyword().Evaluate(x) }
+            { "message", (x) => new MessageKeyword().Evaluate(x) },
+            { "return", (x) => new ReturnKeyword().Evaluate(x) },
+            { "test", (x) => new TestKeyword().Evaluate(x) }
         };
 
         public static Func<BaseType[], BaseType> FunctionFor(string functionName)

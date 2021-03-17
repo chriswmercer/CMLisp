@@ -27,12 +27,26 @@ namespace CMLisp.Types
                 return false;
             }
 
-            return this.Value.Equals(((BaseType)obj).Value);
+            return DeepEquals(obj as BaseType);
         }
 
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        public bool DeepEquals(BaseType obj)
+        {
+            if (obj == null) return false;
+            if (this.Type != obj.Type) return false;
+
+            switch(this.Type)
+            {
+                case LanguageTypes.Array: return (this as ArrayType).Equals(obj as ArrayType);
+                case LanguageTypes.KeyValuePair: return (this as KeyValuePairType).Equals(obj as KeyValuePairType);
+                case LanguageTypes.Object: return (this as ObjectType).Equals(obj as ObjectType);
+                default: return this.Value == obj.Value;
+            }
         }
 
         internal static BaseType GeneratorFor(LanguageTypes type, dynamic value)

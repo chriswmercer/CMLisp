@@ -6,7 +6,9 @@ namespace CMLisp.Language
     {
         private static List<string> Words = new List<string>
         {
-            "is"
+            "is",
+            "with",
+            "expect"
         };
 
         public static bool IsKnown(string potentialWord)

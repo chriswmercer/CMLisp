@@ -1,0 +1,54 @@
+﻿; run "Examples/example13.txt"
+(
+    (printline 
+        (
+            <div>
+                <h1>This is a test</h1>
+            </div>
+
+            *
+
+            2
+        )
+    )
+    (printline
+        (
+            { var1 : "chris", var2 : "mercer" }
+
+            =>
+
+            <div>
+                <h1>Hello, %var1%</h1>
+                <h2>Full name: %var1% %var2%</h2>
+            </div>
+        )
+    )
+    (printline (rest [1, 2, 3, 4, 5]))
+
+    (variable anObject is { prop1 : "prop1val", prop2 : "prop2val" })
+    (printline anObject.prop1)
+
+    (variable anArray is [1, 2, 3, 4, 5])
+    (printline anArray.0)
+
+    (function recurs is
+        (if (? x)
+            (do (variable f is (first x))
+                (printline f)
+                (variable rx is (rest x))
+                (printline rx)
+                (message "calling recurs")
+                ({ x : rx } => recurs))
+            (return "cheese")
+        )
+    )
+
+    (function basic is
+        (test basic with {} expect 5)
+        (2 + 3))
+
+    ({ x : [898, 2, 3, 4, 5] } => recurs)
+
+    (test recurs with { x : [898, 2, 3, 4, 5] } expect ["calling recurs", "cheese"])
+    (test basic with {} expect 5)
+) 

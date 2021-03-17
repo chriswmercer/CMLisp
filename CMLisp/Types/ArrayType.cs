@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CMLisp.Language;
 
 namespace CMLisp.Types
@@ -26,6 +27,15 @@ namespace CMLisp.Types
             result += "]";
 
             return result;
+        }
+
+        public bool Equals(ArrayType obj)
+        {
+            if (obj == null) return false;
+
+            var left = this.Value.Where(x => x.Type != LanguageTypes.Nil);
+            var right = obj.Value.Where(x => x.Type != LanguageTypes.Nil);
+            return left.SequenceEqual(right);
         }
     }
 }

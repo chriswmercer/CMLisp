@@ -34,5 +34,11 @@ namespace CMLisp.Language
                 return null;
             }
         }
+
+        public bool FunctionExists(string identifier)
+        {
+            var element = Get(identifier);
+            return element?.IsFunction ?? false;
+        }
     }
 }

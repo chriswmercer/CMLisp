@@ -23,10 +23,10 @@ namespace CMLisp.Core
             }
         }
 
-        private static BaseType Evaluate(BaseType input)
+        internal static BaseType Evaluate(BaseType input, Scope scope = null, bool ignoreTestStatement = false)
         {
-            Evaluator.GlobalScope = new Scope();
-            var result = Evaluator.Evaluate(input, null);
+            Evaluator.GlobalScope = scope ?? new Scope();
+            var result = Evaluator.Evaluate(input, null, ignoreTestStatement);
             return result;
         }
     }

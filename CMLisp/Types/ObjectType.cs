@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using CMLisp.Language;
 
 namespace CMLisp.Types
@@ -71,6 +72,26 @@ namespace CMLisp.Types
 
                 return keys.ToArray();
             }
+        }
+
+        public bool Equals(ObjectType obj)
+        {
+            if (obj == null) return false;
+
+            var left = this.Value;
+            var right = obj.Value;
+
+            if (left.Count != right.Count) return false;
+
+            for(int i = 0; i < left.Count; i++)
+            {
+                var valueLeft = left[i] as KeyValuePairType;
+                var valueRight = right[i] as KeyValuePairType;
+                if (valueLeft == null || valueRight == null) return false;
+                if (!valueLeft.Equals(valueRight)) return false;
+            }
+
+            return true;
         }
     }
 }
