@@ -29,7 +29,8 @@ namespace CMLisp.Language
             { "message", (x) => new MessageKeyword().Evaluate(x) },
             { "return", (x) => new ReturnKeyword().Evaluate(x) },
             { "test", (x) => new TestKeyword().Evaluate(x) },
-            { "json", (x) => new JsonKeyword().Evaluate(x) }
+            { "json", (x) => new JsonKeyword().Evaluate(x) },
+            { "reverse", (x) => new ReverseKeyword().Evaluate(x) }
         };
 
         public static Func<BaseType[], BaseType> FunctionFor(string functionName)

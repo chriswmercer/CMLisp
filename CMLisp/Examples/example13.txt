@@ -52,10 +52,17 @@
 
     (variable testparams is { x : [898, 2, 3, 4, 5], y : [1, 2, 3, 4] })
 
-    (test recurs with testparams expect ["calling recurs", "cheese", 1])
+    (test recurs with testparams expect ["calling recurs", "cheese"])
     (test basic with {} expect 5)
 
     (print (json { x : [898, 2, 3, 4, 5] }))
     (variable jsontest is { x : [898, 2, 3, 4, 5] })
     (print (json jsontest))
+
+    (printline (reverse "cheese"))
+    (printline (reverse 3.14))
+    (printline (reverse 58))
+    (printline (reverse [1, 2, 3]))
+    (printline (reverse true))
+
 ) 

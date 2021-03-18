@@ -9,6 +9,11 @@ namespace CMLisp.Keywords
     {
         public BaseType Evaluate(BaseType[] input)
         {
+            if (Language.Keywords.IsKnown(input[0].Value) || ReservedWords.IsKnown(input[0].Value))
+            {
+                throw new LanguageException($"The identifer { input[0].Value } is a known keyword or reserved word.");
+            }
+
             if (input.Length == 3)
             {
                 if (input[0].Type != LanguageTypes.Identifier || input[1].Value.ToString().ToLower() != "is" || input[2].Type != LanguageTypes.List)
@@ -62,11 +67,6 @@ namespace CMLisp.Keywords
             else
             {
                 throw new LanguageException("The function keyword requires exactly 3 parameters - an identifier, \"is\" and a list value");
-            }
-
-            if (Language.Keywords.IsKnown(input[0].Value) || ReservedWords.IsKnown(input[0].Value))
-            {
-                throw new LanguageException($"The identifer { input[0].Value } is a known keyword or reserved word.");
             }
         }
 

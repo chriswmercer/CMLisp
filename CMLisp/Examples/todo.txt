@@ -3,9 +3,9 @@
 
 - Add keywords: for, concatenate, reverse, etc
     (done) concatinate
-    reverse
+    (done) reverse
     (done) first
-    rest
+    (done) rest
     (done) nth
     apply
     (done) do (do the actions and return as an array)
