@@ -1,4 +1,5 @@
 ﻿using System;
+using CMLisp.Language;
 
 namespace CMLisp.Types
 {
@@ -59,6 +60,7 @@ namespace CMLisp.Types
                 case LanguageTypes.Fragment: return new FragmentType(value);
                 case LanguageTypes.KeyValuePair: return new KeyValuePairType(value);
                 case LanguageTypes.Integer: return new IntegerType(value);
+                case LanguageTypes.List: return new ListContainer(value);
                 case LanguageTypes.Object: return new ObjectType(value);
                 case LanguageTypes.String: return new StringType(value);
                 case LanguageTypes.DateTime: return new DateTimeType(value);

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using CMLisp.Language;
 
 namespace CMLisp.Types
 {
-    public class ArrayType : ListContainer
+    public class ArrayType : ListContainer, IEnumerable
     {
         public ArrayType(List<BaseType> val) : base(val)
         {
@@ -36,6 +37,11 @@ namespace CMLisp.Types
             var left = this.Value.Where(x => x.Type != LanguageTypes.Nil);
             var right = obj.Value.Where(x => x.Type != LanguageTypes.Nil);
             return left.SequenceEqual(right);
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return this.Value.GetEnumerator();
         }
     }
 }

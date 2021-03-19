@@ -7,13 +7,13 @@
     (done) first
     (done) rest
     (done) nth
-    apply
+    apply (no, waterfall)
     (done) do (do the actions and return as an array)
-    split
-    join
-    foreach (same as apply?)
+    (done) split
+    (done) join
+    foreach (no, waterfall)
     lambda
-    trim (remove all nils from array)
+    trim (happens autmaticaly)
     
 
 - Add web server functionality

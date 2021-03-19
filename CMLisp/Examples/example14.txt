@@ -7,4 +7,22 @@
     (printline (now = now))
     (printline (now < now))
     (now as string)
+
+    (variable splitted is [1, 2, 3, 4, 5])
+    (printline (join splitted))
+
+    (var split2 is ["c", "h", "e", "e", "s", "e"])
+    (printline (join split2))
+
+    (var split3 is ["c", ",", "h", ",", "r", ",", "i", ",", "s"])
+    (var joined is (join split3))
+    (var resplit is (split joined ","))
+    (printline joined)
+    (printline resplit)
+
+    (var lr is (lambda split2 x (x * 2)))
+    (printline lr)
+
+    (var opres is (l [1, 2, 3] item (item * 3)))
+    (printline opres)
 )

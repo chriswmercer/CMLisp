@@ -233,8 +233,15 @@ namespace CMLisp.Core
                 var keywords = items.Where(item => item.Type == LanguageTypes.Keyword);
                 var identifiers = items.Where(item => item.Type == LanguageTypes.Identifier);
 
-                if (symbols.Count() > 1) throw new LanguageException("Each list must only have 1 symbol");
-                if (keywords.Count() > 1) throw new LanguageException("Each list must only have 1 keyword");
+                if (symbols.Count() > 1)
+                {
+                    throw new LanguageException("Each list must only have 1 symbol");
+                }
+
+                if (keywords.Count() > 1)
+                {
+                    throw new LanguageException("Each list must only have 1 keyword");
+                }
 
                 if (symbols.Any())
                 {

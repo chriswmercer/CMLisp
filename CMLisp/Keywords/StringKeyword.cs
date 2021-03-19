@@ -9,14 +9,14 @@ namespace CMLisp.Keywords
     {
         public BaseType Evaluate(BaseType[] input)
         {
-            if (input.Length != 2 || input[0].Type != LanguageTypes.Identifier || input[1].Value.ToString().ToLower() != "as")
+            if (input.Length != 2 || (input[0].Type != LanguageTypes.Identifier && input[0].Type != LanguageTypes.List) || input[1].Value.ToString().ToLower() != "as")
             {
                 throw new LanguageException("The conversion keywords required exactly 2 parameters - an identifier convertable to the requested type, and \"as\". For example: (x as string)");
             }
 
             var value = input[0];
 
-            while (value.Type == LanguageTypes.Identifier)
+            while (value.Type == LanguageTypes.Identifier || value.Type == LanguageTypes.List)
             {
                 value = Evaluator.Evaluate(input[0], Evaluator.LocalScope);
             }
