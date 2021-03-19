@@ -61,7 +61,13 @@ namespace CMLisp.Operations
             x = items[0];
             y = items[1];
 
-            if((x.Type != LanguageTypes.Decimal && x.Type != LanguageTypes.Integer) || (y.Type != LanguageTypes.Decimal && y.Type != LanguageTypes.Integer))
+
+            if (x.Type == LanguageTypes.DateTime || y.Type == LanguageTypes.DateTime)
+            {
+
+                return (x.Type == LanguageTypes.DateTime && y.Type == LanguageTypes.DateTime);
+            }
+            else if ((x.Type != LanguageTypes.Decimal && x.Type != LanguageTypes.Integer) || (y.Type != LanguageTypes.Decimal && y.Type != LanguageTypes.Integer))
             {
                 return false;
             }

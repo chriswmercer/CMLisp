@@ -159,6 +159,13 @@ namespace CMLisp.Core
                 if(end != "\"") throw new ArgumentException($"String {value} is not correctly delimited");
 
                 value = value.Replace("\"", "");
+
+                //Is it a datetime?
+                if (DateTimeType.TryParse(value, out DateTimeType dtResult))
+                {
+                    return dtResult;
+                }
+
                 stringType.Value = value;
                 return stringType;
             }

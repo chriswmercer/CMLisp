@@ -1,0 +1,10 @@
+﻿; run "Examples/example14.txt"
+(
+    (variable name is "chris")
+    (variable now is "16/11/1978")
+    (printline now)
+    (printline (now > "16/12/1978"))
+    (printline (now = now))
+    (printline (now < now))
+    (now as string)
+)

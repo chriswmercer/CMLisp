@@ -7,11 +7,11 @@ namespace CMLisp.Keywords
 {
     public class JsonKeyword
     {
-        private const string Error = "Json must be used with 1 Object type";
+        private const string Error = "The conversion keywords required exactly 2 parameters - an identifier convertable to the requested type, and \"as\". For example: (x as json)";
 
         public BaseType Evaluate(BaseType[] input)
         {
-            if (input.Length != 1 || (input[0].Type != LanguageTypes.Identifier && input[0].Type != LanguageTypes.Object))
+            if (input.Length != 2 || (input[0].Type != LanguageTypes.Identifier && input[0].Type != LanguageTypes.Object) || input[1].Value.ToString().ToLower() != "as")
             {
                 throw new LanguageException(Error);
             }

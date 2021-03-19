@@ -18,7 +18,6 @@
 
 - Add web server functionality
 - Add open text file functionality
-- Add test statements
 - Ensure only interpreter is public rest is internal
 - Promote keyword
 - DateTime type
@@ -36,6 +35,7 @@ DONE
 - ? operator
 - IS for function?
 - Fix tokenising to correctly build fragments
+- Add test statements
 
 -----
 

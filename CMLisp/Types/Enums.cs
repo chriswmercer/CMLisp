@@ -16,6 +16,7 @@
         Identifier,
         Fragment,
         KeyValuePair,
-        ReservedWord
+        ReservedWord,
+        DateTime
     }
 }

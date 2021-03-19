@@ -61,6 +61,7 @@ namespace CMLisp.Types
                 case LanguageTypes.Integer: return new IntegerType(value);
                 case LanguageTypes.Object: return new ObjectType(value);
                 case LanguageTypes.String: return new StringType(value);
+                case LanguageTypes.DateTime: return new DateTimeType(value);
                 default: throw new Exception("Could not determine type");
             }
         }
@@ -75,7 +76,8 @@ namespace CMLisp.Types
                 case LanguageTypes.Fragment:
                 case LanguageTypes.Integer:
                 case LanguageTypes.Object:
-                case LanguageTypes.String: return true;
+                case LanguageTypes.String:
+                case LanguageTypes.DateTime: return true;
                 default: return false;
             }
         }

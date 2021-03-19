@@ -28,6 +28,10 @@ namespace CMLisp.Keywords
                     value = (List<BaseType>)value;
                     result = Extensions.ToString(value);
                 }
+                else if(evaluated.Type == LanguageTypes.DateTime)
+                {
+                    result = (evaluated as DateTimeType).ToString();
+                }
                 else
                 {
                     result = value.ToString();

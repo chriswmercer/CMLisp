@@ -8,7 +8,8 @@ namespace CMLisp.Language
         {
             "is",
             "with",
-            "expect"
+            "expect",
+            "as"
         };
 
         public static bool IsKnown(string potentialWord)
