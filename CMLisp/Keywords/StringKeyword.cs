@@ -1,5 +1,4 @@
-﻿using System;
-using CMLisp.Core;
+﻿using CMLisp.Core;
 using CMLisp.Exceptions;
 using CMLisp.Types;
 
@@ -26,7 +25,8 @@ namespace CMLisp.Keywords
                 return new StringType((value as DateTimeType).ToString());
             }
 
-            return new StringType(value.Value.ToString());
+            var stringValue = value.Value.ToString();
+            return new StringType(stringValue);
         }
     }
 }

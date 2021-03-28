@@ -25,4 +25,6 @@
 
     (var opres is (l [1, 2, 3] item (item * 3)))
     (printline opres)
+
+    (printline "@now")
 )

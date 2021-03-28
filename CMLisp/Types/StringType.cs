@@ -1,4 +1,6 @@
-﻿namespace CMLisp.Types
+﻿using CMLisp.Language;
+
+namespace CMLisp.Types
 {
     public class StringType : BaseType
     {
@@ -6,7 +8,7 @@
 
         public StringType(string val)
         {
-            internalValue = val;
+            internalValue = Placeholders.ReplacePlaceholders(val);
             Type = LanguageTypes.String;
         }
 
@@ -15,7 +17,7 @@
             get => internalValue;
             set
             {
-                internalValue = (string)value;
+                internalValue = Placeholders.ReplacePlaceholders((string)value);
             }
         }
     }

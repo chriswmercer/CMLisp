@@ -32,7 +32,7 @@ namespace CMLisp.Types
         public override string ToString()
         {
             var datetime = (DateTime)this.Value;
-            return datetime.ToString("dd/MM/yyyy hh:mm:ss.ff");
+            return datetime.ToString("dd/MM/yyyy HH:mm:ss.ff");
         }
     }
 }
