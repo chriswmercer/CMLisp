@@ -9,6 +9,11 @@ namespace CMLisp.Keywords
     {
         public BaseType Evaluate(BaseType[] input)
         {
+            if(input.Length == 0)
+            {
+                return new NilType();
+            }
+
             if(input.Length != 1)
             {
                 throw new LanguageException("The return keyword must only be used with 1 operand");
